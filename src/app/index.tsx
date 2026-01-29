@@ -1,4 +1,7 @@
+import { AntDesign } from "@expo/vector-icons";
 import { StyleSheet, Text, View } from "react-native";
+import ShareButton from "../components/button/share.button";
+import { APP_COLOR } from "../utils/constant";
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -23,7 +26,7 @@ const styles = StyleSheet.create({
     },
     body: {
         fontSize: 30,
-        color: "orange",
+        color: APP_COLOR.ORAGE,
         marginVertical: 20
     },
     footer: {
@@ -54,11 +57,24 @@ const WelcomePage = () => {
             <View style={styles.welcomeBtn}>
                 <Text>Đăng nhập với</Text>
                 <View>
-                    <View style={styles.btnContainer}>
+                    <ShareButton
+                        title="facebook"
+                        onPress={() => alert("click me")}
+                        textStyle={{
+                            textTransform: "uppercase"
+                        }}
+                        pressStyle={{ alignSelf: "stretch" }}
+                        btnStyle={{
+                            justifyContent: "center",
+                            borderRadius: 50
+                        }}
+                        icon={<AntDesign name="plus" size={24} color="black" />}
+                    />
+                    {/* <View style={styles.btnContainer}>
                         <View style={styles.btnContent}>
                             <Text style={styles.btnText}>Facebook</Text>
                         </View>
-                    </View>
+                    </View> */}
                     <View><Text>Google</Text></View>
                 </View>
                 <View><Text>Đăng nhập với email</Text></View>
