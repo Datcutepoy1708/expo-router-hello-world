@@ -1,4 +1,4 @@
-import { APP_COLOR } from "@/src/utils/constant";
+import { APP_COLOR } from "@/utils/constant";
 import { ReactNode } from "react";
 import { Pressable, StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from "react-native";
 const styles = StyleSheet.create({
@@ -8,8 +8,6 @@ const styles = StyleSheet.create({
 
     },
     btnContainer: {
-        borderWidth: 1,
-        color: "green",
         borderRadius: 10,
         paddingHorizontal: 15,
         paddingVertical: 10,
@@ -26,10 +24,10 @@ interface IProps {
     textStyle?: StyleProp<TextStyle>;
     pressStyle?: StyleProp<ViewStyle>;
     btnStyle?: StyleProp<ViewStyle>;
-    icon?:ReactNode
+    icon?: ReactNode
 }
 const ShareButton = (props: IProps) => {
-    const { title, onPress, textStyle, pressStyle, btnStyle,icon } = props
+    const { title, onPress, textStyle, pressStyle, btnStyle, icon } = props
     return (
         <Pressable
             style={({ pressed }) => ([{ opacity: pressed === true ? 0.5 : 1, alignSelf: "flex-start" }, pressStyle])}
