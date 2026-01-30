@@ -3,6 +3,7 @@ import SocialButton from "@/components/button/social.button";
 import ShareInput from "@/components/input/share.input";
 import { APP_COLOR } from "@/utils/constant";
 import { Link } from "expo-router";
+import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -30,15 +31,19 @@ const styles = StyleSheet.create({
 })
 
 const SignUpPage = () => {
+    const [name, setName] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.container}>
                 <View>
                     <Text style={{ fontSize: 25, fontWeight: 600, marginVertical: 30 }}>Đăng kí tài khoản</Text>
                 </View>
-                <ShareInput label="Họ tên" />
-                <ShareInput label="Email" keyboardType="email-address" />
-                <ShareInput label="Mật khẩu" />
+                <ShareInput label="Họ tên" value={name} setValue={setName} />
+                <ShareInput label="Email" keyboardType="email-address" value={email} setValue={setEmail} />
+                <ShareInput label="Mật khẩu" secureTextEntry={true} value={password} setValue={setPassword} />
                 {/* <View style={styles.inputGroup}>
                     <Text style={styles.text}>Họ tên</Text>
                     <TextInput style={styles.input} />
@@ -54,7 +59,7 @@ const SignUpPage = () => {
                 <View style={{ marginVertical: 10 }}></View>
                 <ShareButton
                     title="Đăng ký"
-                    onPress={() => alert("Đăng nhập bằng email")}
+                    onPress={() => console.log(email, password, name)}
                     textStyle={{ color: "#fff", paddingVertical: 5, textTransform: "uppercase" }}
                     btnStyle={{
                         justifyContent: "center",
@@ -67,7 +72,7 @@ const SignUpPage = () => {
                 />
                 <View
                     style={{
-                        marginTop:20,
+                        marginTop: 20,
                         flexDirection: "row",
                         gap: 10,
                         justifyContent: "center"
