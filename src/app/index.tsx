@@ -3,6 +3,7 @@ import ggLogo from "@/assets/auth/google.png";
 import bg from '@/assets/auth/welcome-background.png';
 import ShareButton from "components/button/share.button";
 import { LinearGradient } from 'expo-linear-gradient';
+import { Link, Redirect } from "expo-router";
 import { Image, ImageBackground, StyleSheet, Text, View } from "react-native";
 import { APP_COLOR } from "utils/constant";
 import TextBetweenLine from "./layout/text.between.line";
@@ -49,6 +50,12 @@ const styles = StyleSheet.create({
 })
 
 const WelcomePage = () => {
+    if (true) {
+        return (
+            <Redirect href={"/(auth)/signup"} />
+        )
+    }
+    // return welcome 
     return (
         <ImageBackground style={{ flex: 1 }}
             source={bg}
@@ -158,9 +165,11 @@ const WelcomePage = () => {
                             }}
                         >
                             <Text style={{ color: "white" }}>Chưa có tài khoản?</Text>
-                            <Text style={{ color: "white", textDecorationLine: "underline" }}>
-                                Đăng kí
-                            </Text>
+                            <Link href={"/(auth)/signup"}>
+                                <Text style={{ color: "white", textDecorationLine: "underline" }}>
+                                    Đăng kí
+                                </Text>
+                            </Link>
                         </View>
                     </View>
                 </View>

@@ -19,7 +19,8 @@ const RootLayout = () => {
                 }
             }}
         >
-            <Stack.Screen name="index" options={{headerShown:false}} />
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="(auth)/signup" options={{ headerShown: false }} />
             <Stack.Screen name="(tabs)" options={{ headerTitle: "Trang chủ" }} />
             <Stack.Screen name="product/product" options={{ headerTitle: "Sản phẩm" }} />
             <Stack.Screen name="(auth)/login" options={{ headerTitle: "Đăng nhập" }} />
