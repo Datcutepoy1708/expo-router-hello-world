@@ -44,7 +44,7 @@ const ShareInput = (props: IProps) => {
             <View>
                 <TextInput
                     value={value}
-                    onChange={(text)=>setValue(text)}
+                    onChangeText={(text) => setValue(text)}
                     onFocus={() => setIsFocus(true)}
                     onBlur={() => setIsFocus(false)}
                     keyboardType={keyboardType}
