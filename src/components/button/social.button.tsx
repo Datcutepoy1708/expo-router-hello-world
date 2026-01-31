@@ -1,8 +1,7 @@
 import TextBetweenLine from '@/app/layout/text.between.line';
 import fbLogo from '@/assets/auth/facebook.png';
 import ggLogo from '@/assets/auth/google.png';
-import { Link } from 'expo-router';
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 import ShareButton from "./share.button";
 
 const styles = StyleSheet.create({
@@ -108,12 +107,6 @@ const SocialButton = () => {
                     justifyContent: "center"
                 }}
             >
-                <Text style={{ color: "white" }}>Chưa có tài khoản?</Text>
-                <Link href={"/(auth)/signup"}>
-                    <Text style={{ color: "white", textDecorationLine: "underline" }}>
-                        Đăng kí
-                    </Text>
-                </Link>
             </View>
         </View>
     )
