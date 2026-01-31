@@ -1,8 +1,8 @@
 import ShareButton from "@/components/button/share.button";
 import SocialButton from "@/components/button/social.button";
 import ShareInput from "@/components/input/share.input";
+import { registerAPI } from "@/utils/api";
 import { APP_COLOR } from "@/utils/constant";
-import axios from 'axios';
 import { Link, router } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -50,10 +50,9 @@ const SignUpPage = () => {
     // }, [])
 
     const handleSignUp = async () => {
-        const url = `${URL_BACKEND}/api/v1/auth/register`;
         try {
-            const res = await axios.post(url, { email, password, fullname });
-            if(res.data){
+            const res = await registerAPI(email, fullname, password);
+            if (res.data) {
                 router.navigate("/(auth)/verify");
             }
             console.log(">>check response: ", res.data);
