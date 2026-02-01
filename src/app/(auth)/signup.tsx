@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
 const SignUpPage = () => {
     const URL_BACKEND = process.env.EXPO_PUBLIC_API_URL;
 
-    const [fullname, setFullName] = useState<string>("");
+    const [name, setName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
@@ -52,7 +52,7 @@ const SignUpPage = () => {
 
     const handleSignUp = async () => {
         try {
-            const res = await registerAPI(fullname,email,password);
+            const res = await registerAPI(name,email,password);
             if (res.data) {
                 router.navigate({
                     pathname: "/(auth)/verify",
@@ -85,7 +85,7 @@ const SignUpPage = () => {
                 <View>
                     <Text style={{ fontSize: 25, fontWeight: 600, marginVertical: 30 }}>Đăng kí tài khoản</Text>
                 </View>
-                <ShareInput label="Họ tên" value={fullname} setValue={setFullName} />
+                <ShareInput label="Họ tên" value={name} setValue={setName} />
                 <ShareInput label="Email" keyboardType="email-address" value={email} setValue={setEmail} />
                 <ShareInput label="Mật khẩu" secureTextEntry={true} value={password} setValue={setPassword} />
                 {/* <View style={styles.inputGroup}>

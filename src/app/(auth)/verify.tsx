@@ -1,5 +1,5 @@
 import LoadingOverlay from "@/components/loading/overlay";
-import { verifyCodeAPI } from "@/utils/api";
+import { resendCodeAPI, verifyCodeAPI } from "@/utils/api";
 import { APP_COLOR } from "@/utils/constant";
 import { router } from "expo-router";
 import { useLocalSearchParams } from "expo-router/build/hooks";
@@ -25,7 +25,66 @@ const VerifyPage = () => {
     const otpRef = useRef<OTPTextView>(null);
     const [code, setCode] = useState<string>("");
     const { email } = useLocalSearchParams();
+    const [isResending, setIsResending] = useState<boolean>(false);
+    // const handleResendCode = async () => {
+    //     otpRef?.current?.clear();
+    //     // call api 
+    //     const res = await resendCodeAPI(email as string);
+    //     const m = res.data ? "Resend code thành công" : res.message
+    //     if (res.data) {
+    //         Toast.show(m, {
+    //             duration: Toast.durations.LONG,
+    //             textColor: "white",
+    //             backgroundColor: APP_COLOR.GREEN,
+    //             opacity: 1,
+    //             position: Toast.positions.TOP
+    //         })
+    //     }
+    // }
+    const handleResendCode = async () => {
+        try {
+            setIsResending(true);
+            otpRef?.current?.clear();
 
+            const res = await resendCodeAPI(email as string);
+
+            if (res.data) {
+                // ✅ Success
+                Toast.show("Gửi lại mã thành công. Vui lòng kiểm tra email!", {
+                    duration: Toast.durations.LONG,
+                    textColor: "white",
+                    backgroundColor: APP_COLOR.GREEN, // Xanh khi thành công
+                    opacity: 1,
+                    position: Toast.positions.TOP
+                });
+            } else {
+                // ✅ Error từ server
+                const errorMessage = Array.isArray(res.message)
+                    ? res.message[0]
+                    : res.message || "Gửi lại mã thất bại";
+
+                Toast.show(errorMessage, {
+                    duration: Toast.durations.LONG,
+                    textColor: "white",
+                    backgroundColor: APP_COLOR.ORAGE, // Cam khi lỗi
+                    opacity: 1,
+                    position: Toast.positions.TOP
+                });
+            }
+        } catch (error) {
+            // ✅ Error từ network/exception
+            console.error("Resend code error:", error);
+            Toast.show("Có lỗi xảy ra. Vui lòng thử lại!", {
+                duration: Toast.durations.LONG,
+                textColor: "white",
+                backgroundColor: APP_COLOR.ORAGE,
+                opacity: 1,
+                position: Toast.positions.TOP
+            });
+        } finally {
+            setIsResending(false);
+        }
+    };
     const verifyCode = async () => {
 
         Keyboard.dismiss()
@@ -86,7 +145,9 @@ const VerifyPage = () => {
                 <View style={{ flexDirection: "row", marginVertical: 10, marginHorizontal: 10 }}>
                     <Text>Không nhận được mã xác thực?</Text>
                     <View>
-                        <Text style={{ textDecorationLine: "underline" }}> Gửi lại</Text>
+                        <Text
+                            onPress={handleResendCode}
+                            style={{ textDecorationLine: "underline" }}> Gửi lại</Text>
                     </View>
                 </View>
             </View>
