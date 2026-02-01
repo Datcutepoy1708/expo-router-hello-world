@@ -123,7 +123,7 @@ const SignUpPage = () => {
                     }}
                 >
                     <Text style={{ color: "black" }}>Đã có tài khoản?</Text>
-                    <Link href={"/(auth)/signup"}>
+                    <Link href={"/(auth)/login"}>
                         <Text style={{ color: "black", textDecorationLine: "underline" }}>
                             Đăng nhập
                         </Text>

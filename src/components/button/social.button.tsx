@@ -83,7 +83,7 @@ const SocialButton = () => {
                     }
                 />
             </View>
-            <View>
+            {/* <View>
                 <ShareButton
                     title="Đăng nhập bằng email"
                     onPress={() => alert("Đăng nhập bằng email")}
@@ -99,7 +99,7 @@ const SocialButton = () => {
                     }}
                     pressStyle={{ alignSelf: "stretch" }}
                 />
-            </View>
+            </View> */}
             <View
                 style={{
                     flexDirection: "row",

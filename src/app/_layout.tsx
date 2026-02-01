@@ -10,7 +10,7 @@ const RootLayout = () => {
         //     <Text>Footer</Text>
         // </View>
         <RootSiblingParent>
-            <SafeAreaView style={{flex:1}}>
+            <SafeAreaView style={{ flex: 1 }}>
                 <Stack
                     screenOptions={{
                         headerStyle: {
@@ -27,7 +27,8 @@ const RootLayout = () => {
                     <Stack.Screen name="(auth)/verify" options={{ headerShown: false }} />
                     <Stack.Screen name="(tabs)" options={{ headerTitle: "Trang chủ" }} />
                     <Stack.Screen name="product/product" options={{ headerTitle: "Sản phẩm" }} />
-                    <Stack.Screen name="(auth)/login" options={{ headerTitle: "Đăng nhập" }} />
+                    {/* <Stack.Screen name="(auth)/login" options={{ headerTitle: "Đăng nhập" }} /> */}                    
+                    <Stack.Screen name="(auth)/login" options={{ headerShown: false }} />
                 </Stack>
             </SafeAreaView>
         </RootSiblingParent>
