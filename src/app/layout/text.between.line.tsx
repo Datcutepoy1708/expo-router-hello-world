@@ -1,11 +1,12 @@
 import { Text, View } from "react-native";
 
 interface IProps {
-    title: string
+    title: string,
+    textColor:"white" | "black"
 }
 
 const TextBetweenLine = (props: IProps) => {
-    const { title } = props;
+    const { title,textColor } = props;
     return (
         <View
             style={{
@@ -22,7 +23,7 @@ const TextBetweenLine = (props: IProps) => {
                 }}
             >
             </View>
-            <Text style={{ color: "black", position: "relative", top: 10 }} >{title}</Text>
+            <Text style={{ color: textColor, position: "relative", top: 10 }} >{title}</Text>
             <View
                 style={{
                     borderBottomColor: "#ccc",

@@ -33,7 +33,7 @@ const SocialButton = () => {
                                 }}
                             >Đăng nhập với</Text>
                         </View> */}
-            <TextBetweenLine title="Đăng nhập với" />
+            <TextBetweenLine title="Đăng nhập với" textColor="black" />
             <View
                 style={{
                     flexDirection: "row",
