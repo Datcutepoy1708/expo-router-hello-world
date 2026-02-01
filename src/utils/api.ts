@@ -1,8 +1,8 @@
 import axios from '@/utils/axios.customize';
 
-export const registerAPI = async (email: string, password: string, fullname: string) => {
+export const registerAPI = async (fullname:string, email: string, password: string) => {
     const url = `/api/v1/auth/register`;
-    return await axios.post<IBackendRes<IRegister>>(url, { email, password, fullname });
+    return await axios.post<IBackendRes<IRegister>>(url, { fullname,email,password });
 }
 
 export const verifyCodeAPI = async (email: string, code: string) => {

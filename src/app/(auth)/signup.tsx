@@ -52,18 +52,21 @@ const SignUpPage = () => {
 
     const handleSignUp = async () => {
         try {
-            const res = await registerAPI(email, fullname, password);
+            const res = await registerAPI(fullname,email,password);
             if (res.data) {
-                router.navigate("/(auth)/verify");
+                router.navigate({
+                    pathname: "/(auth)/verify",
+                    params: {email:email}
+                });
             } else {
                 // const message = res.message || res.error || 'Có lỗi xảy ra';
                 const m = Array.isArray(res.message) ? res.message[0] : res.message
                 Toast.show(m, {
                     duration: Toast.durations.LONG,
-                    textColor:"white",
-                    backgroundColor:APP_COLOR.ORAGE,
-                    opacity:1,
-                    position:Toast.positions.TOP
+                    textColor: "white",
+                    backgroundColor: APP_COLOR.ORAGE,
+                    opacity: 1,
+                    position: Toast.positions.TOP
                 })
             }
         } catch (error: any) {
