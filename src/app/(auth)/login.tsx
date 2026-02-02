@@ -20,10 +20,10 @@ const styles = StyleSheet.create({
     }
 })
 const Login = () => {
-    const [email, setEmail] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
+    // const [email, setEmail] = useState<string>("");
+    // const [password, setPassword] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
-    const handleLogin = async () => {
+    const handleLogin = async (email: string, password: string) => {
         try {
             setLoading(true);
             const res = await loginAPI(email, password);
@@ -98,29 +98,93 @@ const Login = () => {
             <Formik
                 validationSchema={LoginSchema}
                 initialValues={{ email: '', password: '' }}
-                onSubmit={values => console.log("check values = ", values)}
+                onSubmit={values => handleLogin(values.email, values.password)}
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
-                    <View style={{ margin: 10 }}>
-                        <Text>Email</Text>
-                        <TextInput
-                            style={{ borderWidth: 1, borderColor: "#ccc" }}
+                    // <View style={{ margin: 10 }}>
+                    //     <Text>Email</Text>
+                    //     <TextInput
+                    //         style={{ borderWidth: 1, borderColor: "#ccc" }}
+                    //         onChangeText={handleChange('email')}
+                    //         onBlur={handleBlur('email')}
+                    //         value={values.email}
+                    //     />
+                    //     {errors.email && <Text style={{ color: "red" }}>{errors.email}</Text>}
+                    //     <View style={{ marginVertical: 10 }}></View>
+                    //     <Text>Password</Text>
+                    //     <TextInput
+                    //         style={{ borderWidth: 1, borderColor: "#ccc" }}
+                    //         onChangeText={handleChange('password')}
+                    //         onBlur={handleBlur('password')}
+                    //         value={values.password}
+                    //     />
+                    //     {errors.password && <Text style={{ color: "red" }}>{errors.password}</Text>}
+                    //     <View style={{ marginVertical: 10 }}></View>
+                    //     <Button onPress={handleSubmit as any} title="Submit" />
+                    // </View>
+                    <View style={styles.container}>
+                        <View>
+                            <Text
+                                style={{
+                                    fontSize: 25,
+                                    fontWeight: 600,
+                                    marginVertical: 30
+                                }}
+                            >
+                                Đăng Nhập
+                            </Text>
+                        </View>
+                        <ShareInput
+                            label="Email"
+                            keyboardType="email-address"
+                            // value={email}
+                            // setValue={setEmail}
                             onChangeText={handleChange('email')}
                             onBlur={handleBlur('email')}
                             value={values.email}
+                            error={errors.email}
                         />
-                        {errors.email && <Text style={{ color: "red" }}>{errors.email}</Text>}
-                        <View style={{ marginVertical: 10 }}></View>
-                        <Text>Password</Text>
-                        <TextInput
-                            style={{ borderWidth: 1, borderColor: "#ccc" }}
+                        <ShareInput
+                            label="Mật khẩu"
+                            secureTextEntry={true}
+                            // value={password} 
+                            // setValue={setPassword} 
                             onChangeText={handleChange('password')}
                             onBlur={handleBlur('password')}
                             value={values.password}
+                            error={errors.password}
                         />
-                        {errors.password && <Text style={{ color: "red" }}>{errors.password}</Text>}
                         <View style={{ marginVertical: 10 }}></View>
-                        <Button onPress={handleSubmit as any} title="Submit" />
+                        <ShareButton
+                            loading={loading}
+                            title="Đăng nhập"
+                            onPress={handleSubmit as any}
+                            textStyle={{ color: "#fff", paddingVertical: 5, textTransform: "uppercase" }}
+                            btnStyle={{
+                                justifyContent: "center",
+                                borderRadius: 30,
+                                marginHorizontal: 50,
+                                paddingVertical: 10,
+                                backgroundColor: APP_COLOR.ORAGE,
+                            }}
+                            pressStyle={{ alignSelf: "stretch" }}
+                        />
+                        <View
+                            style={{
+                                marginTop: 20,
+                                flexDirection: "row",
+                                gap: 10,
+                                justifyContent: "center"
+                            }}
+                        >
+                            <Text style={{ color: "black" }}>Chưa có tài khoản?</Text>
+                            <Link href={"/(auth)/signup"}>
+                                <Text style={{ color: "black", textDecorationLine: "underline" }}>
+                                    Đăng kí
+                                </Text>
+                            </Link>
+                        </View>
+                        <SocialButton />
                     </View>
                 )}
             </Formik>
