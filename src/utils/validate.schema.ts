@@ -6,3 +6,12 @@ export const LoginSchema = Yup.object().shape({
         .required('password không được để trống'),
     email: Yup.string().email('Định dạng email không hợp lệ').required('Email không được để trống'),
 });
+
+export const SignUpSchema = Yup.object().shape({
+    password: Yup.string()
+        .min(6, 'Password cần tối thiểu 6 kí tự')
+        .max(50, 'Password tối đa 50 kí tự')
+        .required('password không được để trống'),
+    email: Yup.string().email('Định dạng email không hợp lệ').required('Email không được để trống'),
+    name: Yup.string().required("Name không được để trống")
+});
