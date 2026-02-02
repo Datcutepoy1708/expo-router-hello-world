@@ -24,7 +24,7 @@ const VerifyPage = () => {
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
     const otpRef = useRef<OTPTextView>(null);
     const [code, setCode] = useState<string>("");
-    const { email } = useLocalSearchParams();
+    const { email ,isLogin} = useLocalSearchParams();
     const [isResending, setIsResending] = useState<boolean>(false);
     // const handleResendCode = async () => {
     //     otpRef?.current?.clear();

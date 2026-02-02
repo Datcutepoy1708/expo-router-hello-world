@@ -6,6 +6,8 @@ import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, router } from "expo-router";
 import { useState } from "react";
+import { loginAPI } from "@/utils/api";
+import Toast from "react-native-root-toast";
 
 const styles = StyleSheet.create({
     container: {
@@ -18,9 +20,32 @@ const styles = StyleSheet.create({
 const Login = () => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    const handleLogin = () => {
-        console.log("Check email : ") + email;
-        console.log("Check password: ") + password;
+    const handleLogin = async () => {
+        try {
+            const res = await loginAPI(email, password);
+            if (res.data) {
+                router.navigate("/(tabs)")
+                // success
+            }
+            else {
+                const m = Array.isArray(res.message) ? res.message[0] : res.message
+                Toast.show(m, {
+                    duration: Toast.durations.LONG,
+                    textColor: "white",
+                    backgroundColor: APP_COLOR.ORAGE,
+                    opacity: 1,
+                    position: Toast.positions.TOP
+                })
+                if (res.statusCode === 400) {
+                    router.replace({
+                        pathname: "/(auth)/verify",
+                        params: { email: email, isLogin: 1 }
+                    })
+                }
+            }
+        } catch (error: any) {
+            console.log(">>>Check error: " + error.message)
+        }
     }
     return (
         <SafeAreaView style={{ flex: 1 }}>
