@@ -1,6 +1,6 @@
 import { APP_COLOR } from "@/utils/constant";
 import { ReactNode } from "react";
-import { Pressable, StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from "react-native";
+import { ActivityIndicator, Pressable, StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from "react-native";
 const styles = StyleSheet.create({
     text: {
         textTransform: "uppercase",
@@ -24,16 +24,19 @@ interface IProps {
     textStyle?: StyleProp<TextStyle>;
     pressStyle?: StyleProp<ViewStyle>;
     btnStyle?: StyleProp<ViewStyle>;
-    icon?: ReactNode
+    icon?: ReactNode;
+    loading?: boolean
 }
 const ShareButton = (props: IProps) => {
-    const { title, onPress, textStyle, pressStyle, btnStyle, icon } = props
+    const { title, onPress, textStyle, pressStyle, btnStyle, icon, loading = false } = props
     return (
         <Pressable
-            style={({ pressed }) => ([{ opacity: pressed === true ? 0.5 : 1, alignSelf: "flex-start" }, pressStyle])}
+            disabled={loading}
+            style={({ pressed }) => ([{ opacity: pressed === true || loading ? 0.5 : 1, alignSelf: "flex-start" }, pressStyle])}
             onPress={onPress}
         >
             <View style={[styles.btnContainer, btnStyle]}>
+                {loading && <ActivityIndicator color={"black"} />}
                 {icon}
                 {/* <AntDesign name="plus" size={24} color="black" /> */}
                 <Text style={textStyle}>{title}</Text>

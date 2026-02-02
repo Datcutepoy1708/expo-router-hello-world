@@ -20,9 +20,12 @@ const styles = StyleSheet.create({
 const Login = () => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const [loading, setLoading] = useState<boolean>(false);
     const handleLogin = async () => {
         try {
+            setLoading(true);
             const res = await loginAPI(email, password);
+            setLoading(false)
             if (res.data) {
                 router.navigate("/(tabs)")
                 // success
@@ -57,6 +60,7 @@ const Login = () => {
                 <ShareInput label="Mật khẩu" secureTextEntry={true} value={password} setValue={setPassword} />
                 <View style={{ marginVertical: 10 }}></View>
                 <ShareButton
+                    loading={loading}
                     title="Đăng nhập"
                     onPress={handleLogin}
                     textStyle={{ color: "#fff", paddingVertical: 5, textTransform: "uppercase" }}

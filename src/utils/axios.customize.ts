@@ -9,6 +9,7 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
     function (config) {
+        config.headers["delay"]=5000;
         // Do something before the request is sent
         return config;
     },
