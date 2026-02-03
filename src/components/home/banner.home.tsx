@@ -35,7 +35,7 @@ function BannerHome() {
             <Carousel
                 ref={ref}
                 width={width}
-                height={width / 2}
+                height={width / 4}
                 data={slider}
                 onProgressChange={progress}
                 renderItem={({ index, item }) => (
@@ -53,8 +53,8 @@ function BannerHome() {
                 progress={progress}
                 data={slider}
                 dotStyle={{
-                    width: 5,
-                    height: 5,
+                    // width: 5,
+                    // height: 5,
                     backgroundColor: "rgba(0,0,0,0.2)",
                     borderRadius: 50
                 }}
