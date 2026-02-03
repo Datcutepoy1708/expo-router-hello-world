@@ -1,4 +1,5 @@
 import { FlatList, ScrollView, StyleSheet, Text, View } from "react-native"
+import BannerHome from "./banner.home";
 
 const styles = StyleSheet.create({
     topList: {
@@ -18,6 +19,7 @@ const TopListHome = () => {
     // https://stackoverflow.com/questions/45939823/react-native-horizontal-flatlist-with-multiple-rows
     return (
         <View style={styles.topList} >
+            <BannerHome />
             <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
