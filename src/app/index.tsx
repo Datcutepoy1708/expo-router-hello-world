@@ -50,11 +50,11 @@ const styles = StyleSheet.create({
 })
 
 const WelcomePage = () => {
-    // if (true) {
-    //     return (
-    //         <Redirect href={"/(auth)/login"} />
-    //     )
-    // }
+    if (true) {
+        return (
+            <Redirect href={"/(tabs)"} />
+        )
+    }
     // return welcome 
     return (
         <ImageBackground style={{ flex: 1 }}
