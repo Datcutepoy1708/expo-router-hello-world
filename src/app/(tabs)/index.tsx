@@ -14,7 +14,7 @@ const HomeTab = () => {
         // https://stackoverflow.com/questions/45939823/react-native-horizontal-flatlist-with-multiple-rows
     }
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={styles.container} edges={['left', 'right', 'bottom']}>
             <CustomFlatList
                 data={data}
                 style={styles.list}
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         overflow: "hidden",
-        padding: 8
+        // padding: 8
     },
     header: {
         borderColor: "red",
