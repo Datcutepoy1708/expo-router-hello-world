@@ -27,8 +27,8 @@ export const useCustomFlatListHook = (): TUseCustomFlatListHook => {
   const scrollY = useRef(new Animated.Value(0)).current;
   const [heights, setHeights] = useState({
     header: 0,
-    sticky: 0,
-    topList: 0
+    sticky: 50,
+    topList: 100
   });
 
   const styles: ICustomFlatListStyles = {
