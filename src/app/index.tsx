@@ -11,49 +11,14 @@ import { useEffect } from "react";
 import { Image, ImageBackground, StyleSheet, Text, View } from "react-native";
 import { APP_COLOR } from "utils/constant";
 import TextBetweenLine from "./layout/text.between.line";
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingHorizontal: 10
-    },
-    welcomeText: {
-        flex: 0.6,
-        alignItems: "flex-start",
-        justifyContent: "center",
-        paddingLeft: 20
 
-    },
-    welcomeBtn: {
-        flex: 0.4,
-        gap: 30
-    },
-    header: {
-        fontSize: 40,
-        fontWeight: "600"
-    },
-    body: {
-        fontSize: 30,
-        color: APP_COLOR.ORAGE,
-        marginVertical: 20
-    },
-    footer: {
+import * as SplashScreen from 'expo-splash-screen';
 
-    },
-    // btnContainer: {
+// Keep the splash screen visible while we fetch resources
+SplashScreen.preventAutoHideAsync();
 
-    // },
-    // btnContent: {
-    //     backgroundColor: "green",
-    //     padding: 20,
-    //     borderRadius: 10,
-    //     alignSelf: "flex-start"
-    // },
-    // btnText: {
-    //     textTransform: "uppercase"
-    // }
-})
 
-const WelcomePage = () => {
+const RootPage = () => {
     // useEffect(() => {
     //     const test = async () => {
     //         await AsyncStorage.setItem("eric", "eric-value")
@@ -62,25 +27,36 @@ const WelcomePage = () => {
     //     test()
     // }, [])
     const { setAppState } = useCurrentApp()
-    useEffect(() => {
-        const fetchAccount = async () => {
-            const res = await getAccountAPI();
 
-            const apiData = res.data as any;
-            // API returns nested structure: res.data.data.user
-            if (apiData && apiData.data && apiData.data.user) {
-                const access_token = await AsyncStorage.getItem("access_token");
-                setAppState({
-                    user: apiData.data.user,  // Correct: apiData.data.user, not apiData.user
-                    access_token: access_token || ""
-                })
-                router.replace("/(tabs)")
-            } else {
-                // No valid user data, stay on welcome page
+    useEffect(() => {
+        async function doAsyncStuff() {
+            try {
+                // do something async here
+                const res = await getAccountAPI();
+
+                const apiData = res.data as any;
+                // API returns nested structure: res.data.data.user
+                if (apiData && apiData.data && apiData.data.user) {
+                    const access_token = await AsyncStorage.getItem("access_token");
+                    setAppState({
+                        user: apiData.data.user,  // Correct: apiData.data.user, not apiData.user
+                        access_token: access_token || ""
+                    })
+                    router.replace("/(tabs)")
+                   
+                } else {
+                    // No valid user data, stay on welcome page
+                    router.replace("/(auth)/welcome")
+                }
+            } catch (e) {
+                console.warn(e);
+            } finally {
+                await SplashScreen.hideAsync()
             }
         }
-        fetchAccount()
-    }, [])
+
+        doAsyncStuff();
+    }, []);
     // if (true) {
     //     return (
     //         <Redirect href={"/(tabs)"} />
@@ -89,124 +65,11 @@ const WelcomePage = () => {
     // return welcome 
     return (
 
-        <ImageBackground style={{ flex: 1 }}
-            source={bg}
-        // source={required("@/assets/auth/welcome-background.png")}
-        >
-            <LinearGradient
-                style={{ flex: 1 }}
-                colors={['transparent', '#191B2F']}
-                locations={[0.2, 0.8]}>
-                <View style={styles.container}>
-                    <View style={styles.welcomeText}>
-                        <Text style={styles.header}>Welcome page</Text>
-                        <Text style={styles.body}>Cute Food</Text>
-                        <Text style={styles.footer}>Your favorite foods deliverd fast at your door</Text>
-                    </View>
-                    <View style={styles.welcomeBtn}>
-                        {/* <View 
-                        style={{
-                            borderBottomWidth: 1,
-                            borderBottomColor: "red",
-                            marginHorizontal: 50
-                        }}
-                        >
-                            <Text
-                                style={{
-                                    padding: 10,
-                                    textAlign: "center",
-                                    backgroundColor: "white",
-                                    alignSelf: "center",
-                                    position: "relative",
-                                    top: 20
-                                }}
-                            >Đăng nhập với</Text>
-                        </View> */}
-                        <TextBetweenLine title="Đăng nhập với" textColor="white" />
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                justifyContent: "center",
-                                gap: 20
-                            }}
-                        >
-                            <ShareButton
-                                title="facebook"
-                                onPress={() => alert("click me")}
-                                textStyle={{
-                                    textTransform: "uppercase"
-                                }}
-                                pressStyle={{ alignSelf: "stretch" }}
-                                btnStyle={{
-                                    justifyContent: "center",
-                                    borderRadius: 30,
-                                    backgroundColor: "#fff"
-                                }}
-                                icon={
-                                    // <FontAwesome5 name="facebook" size={30} color="black" />
-                                    <Image source={fbLogo} />
-                                }
-                            />
-                            {/* <View style={styles.btnContainer}>
-                        <View style={styles.btnContent}>
-                            <Text style={styles.btnText}>Facebook</Text>
-                        </View>
-                    </View> */}
-                            {/* <View><Text>Google</Text></View> */}
-                            <ShareButton
-                                title="google"
-                                onPress={() => alert("click me")}
-                                textStyle={{
-                                    textTransform: "uppercase"
-                                }}
-                                pressStyle={{ alignSelf: "stretch" }}
-                                btnStyle={{
-                                    justifyContent: "center",
-                                    borderRadius: 30,
-                                    paddingHorizontal: 20,
-                                    backgroundColor: "#fff"
-                                }}
-                                icon={
-                                    // <FontAwesome5 name="google" size={30} color="black" />
-                                    <Image source={ggLogo} />
-                                }
-                            />
-                        </View>
-                        <View>
-                            <ShareButton
-                                title="Đăng nhập bằng email"
-                                onPress={() => router.navigate("/(auth)/login")}
-                                textStyle={{ color: "#fff", paddingVertical: 5 }}
-                                btnStyle={{
-                                    justifyContent: "center",
-                                    borderRadius: 30,
-                                    marginHorizontal: 50,
-                                    paddingVertical: 10,
-                                    backgroundColor: "#2c2c2c",
-                                    borderColor: "#505050",
-                                    borderWidth: 1
-                                }}
-                                pressStyle={{ alignSelf: "stretch" }}
-                            />
-                        </View>
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                gap: 10,
-                                justifyContent: "center"
-                            }}
-                        >
-                            <Text style={{ color: "white" }}>Chưa có tài khoản?</Text>
-                            <Link href={"/(auth)/signup"}>
-                                <Text style={{ color: "white", textDecorationLine: "underline" }}>
-                                    Đăng kí
-                                </Text>
-                            </Link>
-                        </View>
-                    </View>
-                </View>
-            </LinearGradient>
-        </ImageBackground>
+        <>
+            {/* <View>
+            <Text>Root page</Text>
+        </View> */}
+        </>
     )
 }
-export default WelcomePage;
+export default RootPage;
