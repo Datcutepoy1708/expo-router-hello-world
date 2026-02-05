@@ -4,7 +4,7 @@ import { Image, Platform, StyleSheet, Text, View } from "react-native";
 
 const styles = StyleSheet.create({
     container: {
-       marginTop:20
+        marginTop: 20
     }
 })
 
@@ -12,6 +12,7 @@ const AccountPage = () => {
     const { theme, appState } = useCurrentApp();
     const backend = Platform.OS === "android" ? process.env.EXPO_PUBLIC_ANDROID_API_URL : process.env.EXPO_PUBLIC_IOS_API_URL;
     const baseImage = `${backend}/images/avatar`
+
 
     // Check if user data exists
     if (!appState || !appState.user) {

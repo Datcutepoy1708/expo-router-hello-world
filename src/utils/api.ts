@@ -32,3 +32,8 @@ export const printAsyncStorage = () => {
         });
     });
 };
+
+export const getAccountAPI= ()=> {
+    const url=`/api/v1/auth/account`;
+    return axios.get<IBackendRes<IUserLogin>>(url)
+}

@@ -19,10 +19,9 @@ const HomeTab = () => {
     const MyComponent = () => {
         // https://stackoverflow.com/questions/45939823/react-native-horizontal-flatlist-with-multiple-rows
     }
-    const { setTheme } = useCurrentApp();
+    
     return (
-        <>
-            <Button title="Change context" onPress={() => setTheme('theme update')} />
+        
             <SafeAreaView style={styles.container} edges={['left', 'right', 'bottom']}>
                 <CustomFlatList
                     data={data}
@@ -34,7 +33,6 @@ const HomeTab = () => {
                     TopListElementComponent={<TopListHome />}
                 />
             </SafeAreaView>
-        </>
     );
 }
 

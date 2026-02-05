@@ -31,8 +31,14 @@ const AppProvider = (props: IProps) => {
     const [theme, setTheme] = useState<string>("");
     const [appState, setAppState] = useState<IUserLogin | null>(null);
 
+    // Debug logging
+    const setAppStateWithLog = (value: any) => {
+        setAppState(value);
+    };
+
+
     return (
-        <AppContext.Provider value={{ theme, setTheme, appState, setAppState }} >
+        <AppContext.Provider value={{ theme, setTheme, appState, setAppState: setAppStateWithLog }} >
             {props.children}
         </AppContext.Provider>
     )

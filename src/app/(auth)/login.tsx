@@ -5,6 +5,7 @@ import { useCurrentApp } from "@/context/app.context";
 import { loginAPI } from "@/utils/api";
 import { APP_COLOR } from "@/utils/constant";
 import { LoginSchema } from "@/utils/validate.schema";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Link, router } from "expo-router";
 import { Formik } from 'formik';
 import { useState } from "react";
@@ -31,7 +32,12 @@ const Login = () => {
             setLoading(false)
             // Fix: API response structure is nested - res.data contains another data property
             const apiData = res.data as any;
+
             if (apiData && apiData.data) {
+                const { access_token } = apiData.data;
+                if (access_token) {
+                    await AsyncStorage.setItem("access_token", access_token);
+                }
                 setAppState(apiData.data)  // This is the actual { user, access_token } object
                 router.navigate("/(tabs)")
                 // success
