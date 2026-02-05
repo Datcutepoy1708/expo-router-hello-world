@@ -1,3 +1,4 @@
+
 import AppProvider from "@/context/app.context"
 import { DefaultTheme, ThemeProvider } from "@react-navigation/native"
 import { Stack } from "expo-router"

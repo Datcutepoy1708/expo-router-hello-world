@@ -35,6 +35,7 @@ interface IProps {
     onChangeText?: any
     onBlur?: any
     error?: any
+    title?:string
 }
 
 const ShareInput = (props: IProps) => {

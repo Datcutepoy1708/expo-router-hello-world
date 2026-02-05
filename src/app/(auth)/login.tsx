@@ -1,16 +1,16 @@
 import ShareButton from "@/components/button/share.button";
 import SocialButton from "@/components/button/social.button";
 import ShareInput from "@/components/input/share.input";
-import { APP_COLOR } from "@/utils/constant";
-import { StyleSheet, Text, TextInput, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { Link, router } from "expo-router";
-import { useState } from "react";
+import { useCurrentApp } from "@/context/app.context";
 import { loginAPI } from "@/utils/api";
-import Toast from "react-native-root-toast";
-import { Button } from "react-native";
-import { Formik } from 'formik';
+import { APP_COLOR } from "@/utils/constant";
 import { LoginSchema } from "@/utils/validate.schema";
+import { Link, router } from "expo-router";
+import { Formik } from 'formik';
+import { useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import Toast from "react-native-root-toast";
+import { SafeAreaView } from "react-native-safe-area-context";
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -23,12 +23,16 @@ const Login = () => {
     // const [email, setEmail] = useState<string>("");
     // const [password, setPassword] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
+    const { setAppState } = useCurrentApp();
     const handleLogin = async (email: string, password: string) => {
         try {
             setLoading(true);
             const res = await loginAPI(email, password);
             setLoading(false)
-            if (res.data) {
+            // Fix: API response structure is nested - res.data contains another data property
+            const apiData = res.data as any;
+            if (apiData && apiData.data) {
+                setAppState(apiData.data)  // This is the actual { user, access_token } object
                 router.navigate("/(tabs)")
                 // success
             }

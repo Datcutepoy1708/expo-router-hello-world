@@ -17,5 +17,5 @@ export const resendCodeAPI = async (email: string) => {
 
 export const loginAPI= async(email:string, password:string) => {
     const url=`api/v1/auth/login`;
-    return await axios.post<IBackendRes<IRegister>>(url,{username:email,password});
+    return await axios.post<IBackendRes<IUserLogin>>(url,{username:email,password});
 }
