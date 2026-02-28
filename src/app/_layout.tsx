@@ -23,7 +23,7 @@ const RootLayout = () => {
     <GestureHandlerRootView>
       <RootSiblingParent>
         <AppProvider>
-          <SafeAreaView style={{ flex: 1 }} >
+          {/* <SafeAreaView style={{ flex: 1 }} > */}
             <ThemeProvider value={navTheme}>
               <Stack
                 screenOptions={{
@@ -59,7 +59,7 @@ const RootLayout = () => {
                 />
               </Stack>
             </ThemeProvider>
-          </SafeAreaView>
+          {/* </SafeAreaView> */}
         </AppProvider>
       </RootSiblingParent>
     </GestureHandlerRootView>
