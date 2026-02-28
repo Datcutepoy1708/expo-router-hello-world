@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
         width: "100%"
     },
     topList: {
-        borderColor: "orange",
+        borderColor: "ORAGE",
         borderWidth: 5,
         minHeight: 100,
         marginBottom: 6,

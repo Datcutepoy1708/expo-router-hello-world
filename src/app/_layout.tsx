@@ -50,7 +50,8 @@ const RootLayout = () => {
                 <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                 <Stack.Screen
                   name="product/product"
-                  options={{ headerTitle: "Sản phẩm" }}
+                  // 
+                  options={{headerShown:false}}
                 />
                 {/* <Stack.Screen name="(auth)/login" options={{ headerTitle: "Đăng nhập" }} /> */}
                 <Stack.Screen

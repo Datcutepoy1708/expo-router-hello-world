@@ -3,7 +3,7 @@ import ggLogo from "@/assets/auth/google.png";
 import bg from '@/assets/auth/welcome-background.png';
 import { useCurrentApp } from "@/context/app.context";
 import { getAccountAPI } from "@/utils/api";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import ShareButton from "components/button/share.button";
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link, router } from "expo-router";
