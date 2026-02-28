@@ -33,7 +33,14 @@ export const printAsyncStorage = () => {
     });
 };
 
-export const getAccountAPI= ()=> {
-    const url=`/api/v1/auth/account`;
+export const getAccountAPI = () => {
+    const url = `/api/v1/auth/account`;
     return axios.get<IBackendRes<IUserLogin>>(url)
+}
+
+export const getTopRestaurant = async (ref: string): Promise<ITopRestaurant[]> => {
+    const url = `/api/v1/restaurants/${ref}`;
+    const res: any = await axios.post(url);
+    // backend: { statusCode, message, data: ITopRestaurant[] }
+    return res?.data?.data ?? [];
 }
