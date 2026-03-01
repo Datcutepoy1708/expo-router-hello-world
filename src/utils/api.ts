@@ -44,3 +44,25 @@ export const getTopRestaurant = async (ref: string): Promise<ITopRestaurant[]> =
     // backend: { statusCode, message, data: ITopRestaurant[] }
     return res?.data?.data ?? [];
 }
+export const getRestaurantByIdAPI = async (id: string): Promise<IRestaurant | null> => {
+    // Thêm query parameter để populate menu và menuItem từ backend
+    const url = `/api/v1/restaurants/${id}?populate=menu,menuItem`;
+    const res: any = await axios.get(url);
+    const restaurant = res?.data?.data;
+    
+    return restaurant ?? null;
+}
+export const processDataRestaurantMenu = (restaurant: IRestaurant | null) => {
+    if (!restaurant) return [];
+    return restaurant?.menu?.map((menu, index) => {
+        return {
+            index,
+            key: menu._id,
+            title: menu.title,
+            data: menu.menuItem?.map((item) => ({
+                ...item,
+                image: item.image || '' // Đảm bảo image luôn có giá trị (ít nhất là chuỗi rỗng)
+            })) || []
+        }
+    }) || []
+}

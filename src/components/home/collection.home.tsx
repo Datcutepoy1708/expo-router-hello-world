@@ -10,10 +10,6 @@ interface IProps {
     refAPI: string;
 }
 
-interface ITopRestaurant {
-    image: string;
-    name: string;
-}
 
 const styles = StyleSheet.create({
     container: {
@@ -64,7 +60,10 @@ const CollectionHome = (props: IProps) => {
                     showsHorizontalScrollIndicator={false}
                     renderItem={({ item }) => {
                         return (
-                            <Pressable onPress={()=>router.navigate("/product/product")}>
+                            <Pressable onPress={()=>router.navigate({
+                                pathname: "/product/[id]",
+                                params: {id:item._id}
+                            })}>
                                 <View style={{ backgroundColor: "#efefef" }}>
                                     <Image source={{ uri: `${baseImage}/${item.image}` }} style={{ height: 125, width: 125 }} />
                                     <View style={{ padding: 5 }}>
