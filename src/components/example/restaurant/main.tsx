@@ -8,6 +8,7 @@ import { useRef, useState } from 'react';
 import { getURLBaseBackend } from '@/utils/url.backend';
 import { processDataRestaurantMenu } from '@/utils/api';
 import { AntDesign } from '@expo/vector-icons';
+import { currencyFormatter } from '@/utils/currency.formater';
 
 
 const AnimatedSectionList = Animated.createAnimatedComponent(SectionList);
@@ -231,7 +232,7 @@ const RMain = (props: IProps) => {
                                 <View><Text>{menuItem.title}</Text></View>
                                 <View><Text>{menuItem.description}</Text></View>
                                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                    <Text>{menuItem.basePrice.toLocaleString()} VNĐ</Text>
+                                    <Text style={{color:APP_COLOR.ORAGE}}>{currencyFormatter(menuItem.basePrice)} </Text>
                                     <AntDesign
                                         color={APP_COLOR.ORAGE}
                                         size={24}
