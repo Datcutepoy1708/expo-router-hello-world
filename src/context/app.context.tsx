@@ -5,7 +5,8 @@ interface AppContextType {
     setTheme: (v: string) => void,
     appState: IUserLogin | null,
     setAppState: (v: any) => void
-
+    cart: ICart | Record<string, never>;
+    setCart: (v: any) => void;
 }
 
 const AppContext = createContext<AppContextType | null>(null);
@@ -31,6 +32,8 @@ const AppProvider = (props: IProps) => {
     const [theme, setTheme] = useState<string>("");
     const [appState, setAppState] = useState<IUserLogin | null>(null);
 
+    const [cart, setCart] = useState<ICart | Record<string, never>>({});
+
     // Debug logging
     const setAppStateWithLog = (value: any) => {
         setAppState(value);
@@ -38,7 +41,7 @@ const AppProvider = (props: IProps) => {
 
 
     return (
-        <AppContext.Provider value={{ theme, setTheme, appState, setAppState: setAppStateWithLog }} >
+        <AppContext.Provider value={{ theme, setTheme, appState, setAppState: setAppStateWithLog, cart, setCart }} >
             {props.children}
         </AppContext.Provider>
     )

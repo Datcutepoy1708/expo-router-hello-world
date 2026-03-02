@@ -11,6 +11,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { currencyFormatter } from '@/utils/currency.formater';
 import ItemQuantity from './order/item.quantity';
 import StickyFooter from './order/sticky.footer';
+import TabLayout from '@/app/(tabs)/_layout';
 
 
 const AnimatedSectionList = Animated.createAnimatedComponent(SectionList);
@@ -219,7 +220,7 @@ const RMain = (props: IProps) => {
                         const menuItem = item as IMenuItem;
 
                         return (
-                            <ItemQuantity menuItem={menuItem} />
+                            <ItemQuantity menuItem={menuItem} restaurant={restaurant} />
                         )
                     }
                     }
@@ -243,7 +244,7 @@ const RMain = (props: IProps) => {
                     onMomentumScrollEnd={() => (blockUpdateRef.current = false)}
                 />
             </View>
-            <StickyFooter />
+            <StickyFooter restaurant={restaurant} />
         </View>
     );
 };
