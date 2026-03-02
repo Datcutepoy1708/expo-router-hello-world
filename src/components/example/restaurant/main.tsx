@@ -9,6 +9,8 @@ import { getURLBaseBackend } from '@/utils/url.backend';
 import { processDataRestaurantMenu } from '@/utils/api';
 import { AntDesign } from '@expo/vector-icons';
 import { currencyFormatter } from '@/utils/currency.formater';
+import ItemQuantity from './order/item.quantity';
+import StickyFooter from './order/sticky.footer';
 
 
 const AnimatedSectionList = Animated.createAnimatedComponent(SectionList);
@@ -143,127 +145,105 @@ const RMain = (props: IProps) => {
     }).current;
 
     return (
-        <View>
-            <StickyHeader
-                headerHeight={HEADER_HEIGHT}
-                imageHeight={IMAGE_HEIGHT}
-                animatedBackgroundStyle={animatedBackgroundStyle}
-                animatedArrowColorStyle={animatedArrowColorStyle}
-                animatedStickyHeaderStyle={animatedStickyHeaderStyle}
-                animatedHeartIconStyle={animatedHeartIconStyle}
-            />
+        <View style={{ flex: 1 }}>
+            <View>
+                <StickyHeader
+                    headerHeight={HEADER_HEIGHT}
+                    imageHeight={IMAGE_HEIGHT}
+                    animatedBackgroundStyle={animatedBackgroundStyle}
+                    animatedArrowColorStyle={animatedArrowColorStyle}
+                    animatedStickyHeaderStyle={animatedStickyHeaderStyle}
+                    animatedHeartIconStyle={animatedHeartIconStyle}
+                />
 
-            {/*  Image */}
-            <View style={styles.header}>
-                <Image
-                    source={{ uri: `${getURLBaseBackend()}/images/restaurant/${restaurant?.image}` }}
-                    style={styles.headerImage}
+                {/*  Image */}
+                <View style={styles.header}>
+                    <Image
+                        source={{ uri: `${getURLBaseBackend()}/images/restaurant/${restaurant?.image}` }}
+                        style={styles.headerImage}
+                    />
+                </View>
+
+                {/* Info */}
+                <Animated.View style={[animatedInfoStyle]}>
+                    <Info infoHeight={INFO_HEIGHT} restaurant={restaurant} />
+                </Animated.View>
+
+                {/* Sticky Menu */}
+                <Animated.FlatList
+                    ref={flatListRef}
+                    horizontal
+                    data={processDataRestaurantMenu(restaurant)}
+                    renderItem={({ item, index }) => (
+                        <TouchableOpacity key={index}
+                            onPress={() => {
+                                blockUpdateRef.current = true;
+                                setActiveMenuIndex(index)
+                                sectionListRef.current?.scrollToLocation({
+                                    sectionIndex: item.index,
+                                    itemIndex: 0,
+                                    viewOffset: HEADER_HEIGHT + SLIDE_MENU_HEIGHT
+                                })
+                            }}
+                        >
+                            <View style={{
+                                paddingHorizontal: 7,
+                                height: SLIDE_MENU_HEIGHT,
+                                justifyContent: "center",
+                                borderBottomColor: item.index === activeMenuIndex ? APP_COLOR.ORAGE : APP_COLOR.GRAY,
+                                borderBottomWidth: 2
+                            }}>
+                                <Text style={{
+                                    color: item.index === activeMenuIndex ? APP_COLOR.ORAGE : "black",
+                                    marginHorizontal: 5,
+                                }}>{item.title}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    )}
+                    showsHorizontalScrollIndicator={false}
+                    style={[animatedMenuStyle]}
+                />
+
+                {/* Scrollable Content */}
+                <AnimatedSectionList
+                    ref={sectionListRef as any}
+                    style={{ zIndex: 1 }}
+                    onScroll={onScroll}
+                    stickySectionHeadersEnabled={false}
+                    contentContainerStyle={{
+                        paddingTop: IMAGE_HEIGHT + INFO_HEIGHT + SLIDE_MENU_HEIGHT - 2,
+                        paddingBottom: 50,
+                    }}
+                    sections={processDataRestaurantMenu(restaurant)}
+                    renderItem={({ item, index }: { item: any, index: any }) => {
+                        const menuItem = item as IMenuItem;
+
+                        return (
+                            <ItemQuantity menuItem={menuItem} />
+                        )
+                    }
+                    }
+                    renderSectionHeader={({ section }: { section: any }) => (
+
+                        <View style={{ backgroundColor: "white", paddingHorizontal: 10, paddingTop: 10 }}>
+                            <Text style={{ textTransform: "uppercase" }}>{section.title} </Text>
+                        </View>
+                    )}
+
+                    ItemSeparatorComponent={() => (<>
+                        <View style={{ backgroundColor: "white", paddingHorizontal: 10 }}>
+                            <View style={{ height: 1, backgroundColor: "#ccc", marginVertical: 5 }} />
+                        </View>
+                    </>)}
+                    viewabilityConfig={{
+                        viewAreaCoveragePercentThreshold: 1,
+                        waitForInteraction: true,
+                    }}
+                    onViewableItemsChanged={onViewableItemsChanged}
+                    onMomentumScrollEnd={() => (blockUpdateRef.current = false)}
                 />
             </View>
-
-            {/* Info */}
-            <Animated.View style={[animatedInfoStyle]}>
-                <Info infoHeight={INFO_HEIGHT} restaurant={restaurant} />
-            </Animated.View>
-
-            {/* Sticky Menu */}
-            <Animated.FlatList
-                ref={flatListRef}
-                horizontal
-                data={processDataRestaurantMenu(restaurant)}
-                renderItem={({ item, index }) => (
-                    <TouchableOpacity key={index}
-                        onPress={() => {
-                            blockUpdateRef.current = true;
-                            setActiveMenuIndex(index)
-                            sectionListRef.current?.scrollToLocation({
-                                sectionIndex: item.index,
-                                itemIndex: 0,
-                                viewOffset: HEADER_HEIGHT + SLIDE_MENU_HEIGHT
-                            })
-                        }}
-                    >
-                        <View style={{
-                            paddingHorizontal: 7,
-                            height: SLIDE_MENU_HEIGHT,
-                            justifyContent: "center",
-                            borderBottomColor: item.index === activeMenuIndex ? APP_COLOR.ORAGE : APP_COLOR.GRAY,
-                            borderBottomWidth: 2
-                        }}>
-                            <Text style={{
-                                color: item.index === activeMenuIndex ? APP_COLOR.ORAGE : "black",
-                                marginHorizontal: 5,
-                            }}>{item.title}</Text>
-                        </View>
-                    </TouchableOpacity>
-                )}
-                showsHorizontalScrollIndicator={false}
-                style={[animatedMenuStyle]}
-            />
-
-            {/* Scrollable Content */}
-            <AnimatedSectionList
-                ref={sectionListRef as any}
-                style={{ zIndex: 1 }}
-                onScroll={onScroll}
-                stickySectionHeadersEnabled={false}
-                contentContainerStyle={{
-                    paddingTop: IMAGE_HEIGHT + INFO_HEIGHT + SLIDE_MENU_HEIGHT - 2,
-                    paddingBottom: 30,
-                }}
-                sections={processDataRestaurantMenu(restaurant)}
-                renderItem={({ item, index }: { item: any, index: any }) => {
-                    const menuItem = item as IMenuItem;
-
-                    return (
-                        <View style={{
-                            backgroundColor: "white",
-                            gap: 10,
-                            flexDirection: "row",
-                            padding: 10
-                        }}>
-                            <View style={{ height: 100, width: 100 }}>
-                                <Image
-                                    source={{ uri: `${getURLBaseBackend()}/images/menu-item/${menuItem.image}` }}
-                                    style={{ height: 100, width: 100, resizeMode: 'cover' }}
-                                />
-                            </View>
-                            <View style={{ flex: 1, gap: 10 }}>
-                                <View><Text>{menuItem.title}</Text></View>
-                                <View><Text>{menuItem.description}</Text></View>
-                                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                    <Text style={{color:APP_COLOR.ORAGE}}>{currencyFormatter(menuItem.basePrice)} </Text>
-                                    <AntDesign
-                                        color={APP_COLOR.ORAGE}
-                                        size={24}
-                                        name="plus-square"
-                                    />
-                                </View>
-
-                            </View>
-                        </View>
-                    )
-                }
-                }
-                renderSectionHeader={({ section }: { section: any }) => (
-
-                    <View style={{ backgroundColor: "white", paddingHorizontal: 10, paddingTop: 10 }}>
-                        <Text style={{ textTransform: "uppercase" }}>{section.title} </Text>
-                    </View>
-                )}
-
-                ItemSeparatorComponent={() => (<>
-                    <View style={{ backgroundColor: "white", paddingHorizontal: 10 }}>
-                        <View style={{ height: 1, backgroundColor: "#ccc", marginVertical: 5 }} />
-                    </View>
-                </>)}
-                viewabilityConfig={{
-                    viewAreaCoveragePercentThreshold: 1,
-                    waitForInteraction: true,
-                }}
-                onViewableItemsChanged={onViewableItemsChanged}
-                onMomentumScrollEnd={() => (blockUpdateRef.current = false)}
-            />
+            <StickyFooter />
         </View>
     );
 };
