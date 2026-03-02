@@ -7,7 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import ShareButton from "components/button/share.button";
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link, router } from "expo-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Image, ImageBackground, StyleSheet, Text, View } from "react-native";
 import { APP_COLOR } from "utils/constant";
 import TextBetweenLine from "./layout/text.between.line";
@@ -27,7 +27,7 @@ const RootPage = () => {
     //     test()
     // }, [])
     const { setAppState } = useCurrentApp()
-
+    const [state, setState] = useState<any>();
     useEffect(() => {
         async function doAsyncStuff() {
             try {
@@ -43,12 +43,16 @@ const RootPage = () => {
                         access_token: access_token || ""
                     })
                     router.replace("/(tabs)")
-                   
+
                 } else {
                     // No valid user data, stay on welcome page
                     router.replace("/(auth)/welcome")
                 }
             } catch (e) {
+                setState(() => {
+                    throw new Error('Không thể kết nối tới API...');
+                });
+                console.log("Không thể kết nối tới API");
                 console.warn(e);
             } finally {
                 await SplashScreen.hideAsync()
