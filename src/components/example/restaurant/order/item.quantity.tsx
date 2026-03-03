@@ -3,6 +3,7 @@ import { APP_COLOR } from "@/utils/constant";
 import { currencyFormatter } from "@/utils/currency.formater";
 import { getURLBaseBackend } from "@/utils/url.backend";
 import { AntDesign } from "@expo/vector-icons";
+import { router } from "expo-router";
 import { Image, Pressable, Text, View } from "react-native";
 
 interface IProps {
@@ -14,6 +15,7 @@ const ItemQuantity = (props: IProps) => {
     const { menuItem, restaurant } = props;
     const { cart, setCart } = useCurrentApp();
     const handPressItem = (item: IMenuItem, action: "MINUS" | "PLUS") => {
+        router.navigate("/product/create.modal")
         if (restaurant?._id) {
             const total = action === "MINUS" ? -1 : 1;
             if (!cart[restaurant?._id]) {
@@ -47,7 +49,6 @@ const ItemQuantity = (props: IProps) => {
 
             setCart((prevState: any) => ({ ...prevState, cart }))
         }
-        console.log(cart);
     }
 
     let showMinus = false;
