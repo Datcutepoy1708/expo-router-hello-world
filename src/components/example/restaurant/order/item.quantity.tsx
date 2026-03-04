@@ -5,19 +5,23 @@ import { getURLBaseBackend } from "@/utils/url.backend";
 import { AntDesign } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { Image, Pressable, Text, View } from "react-native";
+import ItemSingle from "./item.single";
 
 interface IProps {
     menuItem: IMenuItem,
     restaurant: IRestaurant | null,
-    isModal:boolean
+    isModal: boolean
 }
 
 const ItemQuantity = (props: IProps) => {
-    const { menuItem, restaurant,isModal } = props;
+    const { menuItem, restaurant, isModal } = props;
     const { cart, setCart } = useCurrentApp();
     const handPressItem = (item: IMenuItem, action: "MINUS" | "PLUS") => {
-        if (item.options.length && isModal===false) {
-            router.navigate("/product/create.modal")
+        if (item.options.length && isModal === false) {
+            router.navigate({
+                pathname: "/product/create.modal",
+                params: { menuItemId: menuItem._id }
+            })
         } else {
             if (restaurant?._id) {
                 const total = action === "MINUS" ? -1 : 1;
@@ -65,60 +69,7 @@ const ItemQuantity = (props: IProps) => {
         }
     }
     return (
-        <>
-            <View style={{
-                backgroundColor: "white",
-                gap: 10,
-                flexDirection: "row",
-                padding: 10
-            }}>
-                <View style={{ height: 100, width: 100 }}>
-                    <Image
-                        source={{ uri: `${getURLBaseBackend()}/images/menu-item/${menuItem.image}` }}
-                        style={{ height: 100, width: 100, resizeMode: 'cover' }}
-                    />
-                </View>
-                <View style={{ flex: 1, gap: 10 }}>
-                    <View><Text>{menuItem.title}</Text></View>
-                    <View><Text>{menuItem.description}</Text></View>
-                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                        <Text style={{ color: APP_COLOR.ORAGE }}>{currencyFormatter(menuItem.basePrice)} </Text>
-                        <View style={{
-                            alignItems: "center",
-                            gap: 3,
-                            flexDirection: "row"
-                        }}>
-                            {showMinus &&
-                                <>
-                                    <Pressable
-                                        style={({ pressed }) => ({
-                                            opacity: pressed === true ? 0.5 : 1,
-                                            alignSelf: "flex-start"
-                                        })}
-                                        onPress={() => handPressItem(menuItem, "MINUS")}
-                                    >
-                                        <AntDesign name="minus-square" size={24} color={APP_COLOR.ORAGE} />
-                                    </Pressable>
-                                    <Text style={{ minWidth: 25, textAlign: "center" }}>
-                                        {quantity}
-                                    </Text>
-                                </>
-                            }
-                            <Pressable
-                                style={({ pressed }) => ({
-                                    opacity: pressed === true ? 0.5 : 1,
-                                    alignSelf: "flex-start"
-                                })}
-                                onPress={() => handPressItem(menuItem, "PLUS")}
-                            >
-                                <AntDesign name="plus-square" size={24} color={APP_COLOR.ORAGE} />
-                            </Pressable>
-                        </View>
-                    </View>
-
-                </View>
-            </View>
-        </>
+        <ItemSingle menuItem={menuItem} handlePressItem={handPressItem} showMinus={showMinus} quantity={quantity} />
     )
 }
 
