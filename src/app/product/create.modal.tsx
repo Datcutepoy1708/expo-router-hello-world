@@ -14,7 +14,7 @@ import { number } from "yup";
 
 const CreateModalPage = () => {
 
-    const { restaurant,cart,setCart } = useCurrentApp();
+    const { restaurant, cart, setCart } = useCurrentApp();
     const { menuItemId } = useLocalSearchParams();
 
     const [menuItem, setMenuItem] = useState<IMenuItem | null>(null);
@@ -23,21 +23,21 @@ const CreateModalPage = () => {
 
     useEffect(() => {
         if (restaurant && menuItemId) {
-            for (let i = 0; i <= restaurant.menu.length; i++) {
+            // Tìm menuItem theo id trong toàn bộ menu của restaurant
+            for (let i = 0; i < restaurant.menu.length; i++) {
                 const menu = restaurant.menu[i];
-
-                let check = false;
-                for (let j = 0; j <= menu.menuItem.length; j++) {
+                let found = false;
+                for (let j = 0; j < menu.menuItem.length; j++) {
                     if (menu.menuItem[j]._id === menuItemId) {
-                        check = true;
+                        found = true;
                         setMenuItem(menu.menuItem[j]);
                         break;
                     }
                 }
-                if (check) break;
+                if (found) break;
             }
         }
-    }, [restaurant, menuItemId])
+    }, [restaurant, menuItemId]);
 
 
     const handlePressItem = (item: IMenuItem, action: "MINUS" | "PLUS") => {
@@ -46,44 +46,59 @@ const CreateModalPage = () => {
         setQuantity((prevQuantity: number) => prevQuantity + total)
     }
 
-    const handleAddCart =()=> {
-       if (restaurant?._id && menuItem) {
-                const total = quantity
-                const item=menuItem;
-                const option=menuItem.options[selectedIndex];
-                if (!cart[restaurant?._id]) {
-                    // chưa tồn tại cửa hàng
-                    cart[restaurant._id] = {
-                        sum: 0,
-                        quantity: 0,
-                        items: {}
-                    }
-                }
-                // xử lý sản phẩm
-                cart[restaurant._id].sum = cart[restaurant._id].sum + total * (item.basePrice+option.additionalPrice);
-                cart[restaurant._id].quantity = cart[restaurant._id].quantity + total;
+    const handleAddCart = () => {
+        if (restaurant?._id && menuItem) {
+            const total = quantity;
+            const item = menuItem;
 
-                // check sản phẩm đã từng thêm vào chưa
-                if (!cart[restaurant._id].items[item._id]) {
-                    cart[restaurant._id].items[item._id] = {
-                        data: menuItem,
-                        quantity: 0
-                    }
+            const option = menuItem.options[selectedIndex];
+            const keyOption = `${option.title}-${option.description}`;
+            if (!cart[restaurant?._id]) {
+                // chưa tồn tại cửa hàng
+                cart[restaurant._id] = {
+                    sum: 0,
+                    quantity: 0,
+                    items: {}
                 }
+            }
 
-                const currentQuantity = cart[restaurant._id].items[item._id].quantity + total
+            // Cộng tiền & số lượng tổng của cửa hàng
+            cart[restaurant._id].sum =
+                cart[restaurant._id].sum + total * (item.basePrice + option.additionalPrice);
+            cart[restaurant._id].quantity =
+                cart[restaurant._id].quantity + total;
+
+            // Khởi tạo item trong cart nếu chưa có
+            if (!cart[restaurant._id].items[item._id]) {
                 cart[restaurant._id].items[item._id] = {
                     data: menuItem,
-                    quantity: currentQuantity
-                }
-                if (currentQuantity <= 0) {
-                    delete cart[restaurant._id].items[item._id];
-                }
-
-                setCart((prevState: any) => ({ ...prevState, cart }))
-                router.back();
+                    quantity: 0,
+                    extra: {}
+                };
             }
-    }
+
+            const currentItem = cart[restaurant._id].items[item._id];
+            const currentQuantity = currentItem.quantity + total;
+            const currentExtraQuantity =
+                (currentItem.extra?.[keyOption] ?? 0) + total;
+
+            cart[restaurant._id].items[item._id] = {
+                data: menuItem,
+                quantity: currentQuantity,
+                extra: {
+                    ...currentItem.extra,
+                    [keyOption]: currentExtraQuantity
+                }
+            };
+
+            if (currentQuantity <= 0) {
+                delete cart[restaurant._id].items[item._id];
+            }
+
+            setCart((prevState: any) => ({ ...prevState, ...cart }));
+            router.back();
+        }
+    };
 
     return (
         <Animated.View
@@ -139,7 +154,7 @@ const CreateModalPage = () => {
                         //     menuItem={menuItem}
                         //     isModal={true}
                         // />
-                        <ItemSingle menuItem={menuItem} showMinus={true} quantity={1} handlePressItem={handlePressItem} />
+                        <ItemSingle menuItem={menuItem} showMinus={true} quantity={quantity} handlePressItem={handlePressItem} />
                     }
                 </View>
 
@@ -206,13 +221,13 @@ const CreateModalPage = () => {
                     justifyContent: "flex-end"
                 }}>
                     <Pressable
-                        onPress={handleAddCart} 
+                        onPress={handleAddCart}
                         style={({ pressed }) => ({
-                        opacity: pressed === true ? 0.5 : 1,
-                        padding: 10,
-                        backgroundColor: APP_COLOR.ORAGE,
-                        borderRadius: 3
-                    })}>
+                            opacity: pressed === true ? 0.5 : 1,
+                            padding: 10,
+                            backgroundColor: APP_COLOR.ORAGE,
+                            borderRadius: 3
+                        })}>
                         <Text style={{ textAlign: "center", color: "white" }}>
                             Thêm vào giỏ hàng
                         </Text>

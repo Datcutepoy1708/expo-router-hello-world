@@ -79,7 +79,8 @@ const RootLayout = () => {
                 name="(auth)/login"
                 options={{ headerShown: false }}
               />
-              <Stack.Screen name="product/create.modal" options={{ headerShown: false,presentation:"transparentModal",animation:"slide_from_bottom" }} />
+              <Stack.Screen name="product/create.modal" options={{ headerShown: false, presentation: "transparentModal", animation: "slide_from_bottom" }} />
+              <Stack.Screen name="product/update.modal" options={{ headerShown: false, animation: "fade", presentation: "transparentModal" }} />
             </Stack>
           </ThemeProvider>
           {/* </SafeAreaView> */}

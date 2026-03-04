@@ -19,7 +19,7 @@ const ItemQuantity = (props: IProps) => {
     const handPressItem = (item: IMenuItem, action: "MINUS" | "PLUS") => {
         if (item.options.length && isModal === false) {
             router.navigate({
-                pathname: "/product/create.modal",
+                pathname: (action === "PLUS" ? "/product/create.modal" : "/product/update.modal") as any,
                 params: { menuItemId: menuItem._id }
             })
         } else {

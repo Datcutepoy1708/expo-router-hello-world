@@ -83,7 +83,10 @@ declare global {
             items: {
                 [key:string]: {
                     quantity:number,
-                    data:IMenuItem
+                    data:IMenuItem;
+                    extra?: {
+                        [key:string]:number
+                    }
                 }
             }
         }
