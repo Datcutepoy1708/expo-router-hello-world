@@ -8,7 +8,7 @@ const CreateModalPage = () => {
             entering={FadeIn}
             style={{
                 flex: 1,
-                justifyContent: 'center',
+                justifyContent: 'flex-end',
                 alignItems: 'center',
                 backgroundColor: '#00000040',
             }}

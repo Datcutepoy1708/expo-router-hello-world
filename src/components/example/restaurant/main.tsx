@@ -12,6 +12,7 @@ import { currencyFormatter } from '@/utils/currency.formater';
 import ItemQuantity from './order/item.quantity';
 import StickyFooter from './order/sticky.footer';
 import TabLayout from '@/app/(tabs)/_layout';
+import { useCurrentApp } from '@/context/app.context';
 
 
 const AnimatedSectionList = Animated.createAnimatedComponent(SectionList);
@@ -25,9 +26,8 @@ const SLIDE_MENU_HEIGHT = 50;
 interface IProps {
     restaurant: IRestaurant | null;
 }
-const RMain = (props: IProps) => {
-
-    const { restaurant } = props
+const RMain = () => {
+    const {restaurant}=useCurrentApp()
     const scrollY = useSharedValue(0);
 
     const sectionListRef = useRef<SectionList>(null);
@@ -220,7 +220,7 @@ const RMain = (props: IProps) => {
                         const menuItem = item as IMenuItem;
 
                         return (
-                            <ItemQuantity menuItem={menuItem} restaurant={restaurant} />
+                            <ItemQuantity menuItem={menuItem} restaurant={restaurant} isModal={false} />
                         )
                     }
                     }

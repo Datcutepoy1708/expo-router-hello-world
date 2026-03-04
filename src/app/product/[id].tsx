@@ -8,11 +8,12 @@ import { useEffect, useState } from "react";
 import { Dimensions, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ContentLoader, { Rect, Circle, Path } from 'react-content-loader/native'
+import { useCurrentApp } from "@/context/app.context";
 
 const ProductPage = () => {
     const { id } = useLocalSearchParams();
     const { height: sHeight, width: sWidth } = Dimensions.get('window');
-    const [restaurant, setRestaurant] = useState<IRestaurant | null>(null);
+    const {restaurant,setRestaurant}=useCurrentApp()
     const [loading, setLoading] = useState(true);
     useEffect(() => {
         const fetchRestaurant = async () => {
@@ -29,7 +30,7 @@ const ProductPage = () => {
     return (
         <View style={{ flex: 1 }}>
             {loading === false ?
-                <RMain restaurant={restaurant} /> :
+                <RMain  /> :
                 <ContentLoader
                     speed={2}
                     width={700}
