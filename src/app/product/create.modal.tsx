@@ -10,13 +10,16 @@ import { useEffect, useState } from "react";
 import Feather from '@expo/vector-icons/Feather';
 import { currencyFormatter } from "@/utils/currency.formater";
 import ItemSingle from "@/components/example/restaurant/order/item.single";
+import { number } from "yup";
 
 const CreateModalPage = () => {
 
-    const { restaurant } = useCurrentApp();
+    const { restaurant,cart,setCart } = useCurrentApp();
     const { menuItemId } = useLocalSearchParams();
 
     const [menuItem, setMenuItem] = useState<IMenuItem | null>(null);
+    const [quantity, setQuantity] = useState<number>(1);
+    const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
     useEffect(() => {
         if (restaurant && menuItemId) {
@@ -35,10 +38,51 @@ const CreateModalPage = () => {
             }
         }
     }, [restaurant, menuItemId])
-  
 
-    const handlePressItem = (item: IMenuItem, action: "MINUS" | "PLUS")=> {
 
+    const handlePressItem = (item: IMenuItem, action: "MINUS" | "PLUS") => {
+        if (action === "MINUS" && quantity === 1) return;
+        const total = action === "MINUS" ? -1 : 1;
+        setQuantity((prevQuantity: number) => prevQuantity + total)
+    }
+
+    const handleAddCart =()=> {
+       if (restaurant?._id && menuItem) {
+                const total = quantity
+                const item=menuItem;
+                const option=menuItem.options[selectedIndex];
+                if (!cart[restaurant?._id]) {
+                    // chưa tồn tại cửa hàng
+                    cart[restaurant._id] = {
+                        sum: 0,
+                        quantity: 0,
+                        items: {}
+                    }
+                }
+                // xử lý sản phẩm
+                cart[restaurant._id].sum = cart[restaurant._id].sum + total * (item.basePrice+option.additionalPrice);
+                cart[restaurant._id].quantity = cart[restaurant._id].quantity + total;
+
+                // check sản phẩm đã từng thêm vào chưa
+                if (!cart[restaurant._id].items[item._id]) {
+                    cart[restaurant._id].items[item._id] = {
+                        data: menuItem,
+                        quantity: 0
+                    }
+                }
+
+                const currentQuantity = cart[restaurant._id].items[item._id].quantity + total
+                cart[restaurant._id].items[item._id] = {
+                    data: menuItem,
+                    quantity: currentQuantity
+                }
+                if (currentQuantity <= 0) {
+                    delete cart[restaurant._id].items[item._id];
+                }
+
+                setCart((prevState: any) => ({ ...prevState, cart }))
+                router.back();
+            }
     }
 
     return (
@@ -95,7 +139,7 @@ const CreateModalPage = () => {
                         //     menuItem={menuItem}
                         //     isModal={true}
                         // />
-                        <ItemSingle menuItem={menuItem} showMinus={true} quantity={1} handlePressItem={handlePressItem}/>
+                        <ItemSingle menuItem={menuItem} showMinus={true} quantity={1} handlePressItem={handlePressItem} />
                     }
                 </View>
 
@@ -135,14 +179,14 @@ const CreateModalPage = () => {
                                     alignItems: "center",
                                 }}>
                                     <Pressable
+                                        onPress={() => setSelectedIndex(index)}
                                         style={({ pressed }) => ({
                                             opacity: pressed === true ? 0.5 : 1,
                                             alignSelf: "flex-start",
                                             padding: 2,
                                             borderRadius: 2,
-                                            backgroundColor: APP_COLOR.ORAGE,
-
-                                            borderColor: APP_COLOR.ORAGE,
+                                            backgroundColor: index === selectedIndex ? APP_COLOR.ORAGE : "white",
+                                            borderColor: index === selectedIndex ? APP_COLOR.ORAGE : "grey",
                                             borderWidth: 1
                                         })}>
                                         <Feather name="check" size={15} color="white" />
@@ -161,7 +205,9 @@ const CreateModalPage = () => {
                     marginHorizontal: 10,
                     justifyContent: "flex-end"
                 }}>
-                    <Pressable style={({ pressed }) => ({
+                    <Pressable
+                        onPress={handleAddCart} 
+                        style={({ pressed }) => ({
                         opacity: pressed === true ? 0.5 : 1,
                         padding: 10,
                         backgroundColor: APP_COLOR.ORAGE,
