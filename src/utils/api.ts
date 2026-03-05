@@ -75,3 +75,10 @@ export const placeOrderAPI = (data: any) => {
     const url = `/api/v1/orders`;
     return axios.post<IBackendRes<IUserLogin>>(url, { ...data });
 }
+
+export const getOrderHistoryAPI = async (): Promise<IOrderHistory[]> => {
+    const url = `/api/v1/orders`;
+    const res: any = await axios.get(url);
+    // backend: { statusCode, message, data: IOrderHistory[] }
+    return res?.data?.data ?? [];
+}

@@ -83,7 +83,7 @@ const StickyFooter = (props: IProps) => {
                         alignItems: "center",
                         backgroundColor: APP_COLOR.ORAGE
                     }}>
-                        <Text style={{ color: "white" }} onPress={() => router.navigate("/product/order")}>
+                        <Text style={{ color: "white" }} onPress={() => router.navigate("/product/place.order")}>
                             Giao hàng
                         </Text>
                     </View>
