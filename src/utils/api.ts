@@ -40,8 +40,8 @@ export const getAccountAPI = () => {
 
 export const getTopRestaurant = async (ref: string): Promise<ITopRestaurant[]> => {
     const url = `/api/v1/restaurants/${ref}`;
-    const res: any = await axios.post(url,{},{
-        headers: {delay:3000}
+    const res: any = await axios.post(url, {}, {
+        headers: { delay: 3000 }
     });
     // backend: { statusCode, message, data: ITopRestaurant[] }
     return res?.data?.data ?? [];
@@ -49,11 +49,11 @@ export const getTopRestaurant = async (ref: string): Promise<ITopRestaurant[]> =
 export const getRestaurantByIdAPI = async (id: string): Promise<IRestaurant | null> => {
     // Thêm query parameter để populate menu và menuItem từ backend
     const url = `/api/v1/restaurants/${id}?populate=menu,menuItem`;
-    const res: any = await axios.get(url,{
-        headers: {delay:3000}
+    const res: any = await axios.get(url, {
+        headers: { delay: 3000 }
     });
     const restaurant = res?.data?.data;
-    
+
     return restaurant ?? null;
 }
 export const processDataRestaurantMenu = (restaurant: IRestaurant | null) => {
@@ -69,4 +69,9 @@ export const processDataRestaurantMenu = (restaurant: IRestaurant | null) => {
             })) || []
         }
     }) || []
+}
+
+export const placeOrderAPI = (data: any) => {
+    const url = `/api/v1/orders`;
+    return axios.post<IBackendRes<IUserLogin>>(url, { ...data });
 }

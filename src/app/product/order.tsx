@@ -1,11 +1,14 @@
 import HeaderHome from "@/components/home/header.home"
 import { useCurrentApp } from "@/context/app.context"
+import { placeOrderAPI } from "@/utils/api"
 import { APP_COLOR } from "@/utils/constant"
 import { currencyFormatter } from "@/utils/currency.formater"
 import { getURLBaseBackend } from "@/utils/url.backend"
+import { router } from "expo-router"
 import { useEffect, useState } from "react"
-import { Image, Text, View } from "react-native"
+import { Image, Pressable, Text, View } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
+import Toast from "react-native-root-toast"
 
 interface IOrderItem {
     image: string,
@@ -16,7 +19,7 @@ interface IOrderItem {
 }
 
 const OrderPage = () => {
-    const { restaurant, cart } = useCurrentApp()
+    const { restaurant, cart, setCart } = useCurrentApp()
     const [orderItems, setOrderItems] = useState<IOrderItem[]>([])
     useEffect(() => {
         if (!cart || !restaurant?._id) {
@@ -60,6 +63,43 @@ const OrderPage = () => {
         }
         setOrderItems(result);
     }, [cart, restaurant])
+
+    const handlePlaceOrder = async () => {
+        const data = {
+            restaurant: restaurant?._id,
+            totalPrice: cart?.[restaurant!._id].sum,
+            totalQuantity: cart?.[restaurant!._id].quantity,
+            detail: orderItems
+        }
+
+        const res = await placeOrderAPI(data);
+        if (res.data) {
+            // success
+            Toast.show("Đặt hàng thành công", {
+                duration: Toast.durations.LONG,
+                textColor: "white",
+                backgroundColor: APP_COLOR.GREEN,
+                opacity: 1,
+                position: Toast.positions.TOP
+            })
+            //clear data cart
+            if (restaurant) {
+                delete cart[restaurant._id];
+                setCart((prevCart: any) => ({ ...prevCart, ...cart }))
+            }
+            router.navigate("/");
+        } else {
+            const m = Array.isArray(res.message) ? res.message[0] : res.message
+            Toast.show(m, {
+                duration: Toast.durations.LONG,
+                textColor: "white",
+                backgroundColor: APP_COLOR.ORAGE,
+                opacity: 1,
+                position: Toast.positions.TOP
+            })
+        }
+    }
+
     return (
         <View style={{ flex: 1 }}>
             <View style={{
@@ -104,10 +144,10 @@ const OrderPage = () => {
                             justifyContent: "space-between"
                         }}>
                             <Text style={{ color: APP_COLOR.GRAY }}>
-                                Tổng cộng ({cart?.[restaurant!._id].quantity})
+                                Tổng cộng ({restaurant && cart?.[restaurant._id] && cart?.[restaurant!._id].quantity} món)
                             </Text>
                             <Text>
-                                {currencyFormatter(cart?.[restaurant!._id].sum)}
+                                {currencyFormatter(restaurant && cart?.[restaurant._id] && cart?.[restaurant!._id].sum)}
                             </Text>
                         </View>
                     </View>
@@ -146,18 +186,27 @@ const OrderPage = () => {
                     </View>
                 </View>
 
-                <View style={{
-                    backgroundColor: APP_COLOR.ORAGE,
-                    paddingVertical: 12,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: 3
-                }}>
-                    <Text style={{ color: 'white', fontWeight: '500', fontSize: 16 }}>
-                        Đặt đơn {cart?.[restaurant!._id]?.sum ? `- ${currencyFormatter(cart?.[restaurant!._id].sum)}` : ""}
-                    </Text>
-                </View>
+                <Pressable
+                    onPress={handlePlaceOrder}
+                    style={({ pressed }) => ({
+                        opacity: pressed === true ? 0.5 : 1,
+                        backgroundColor: APP_COLOR.ORAGE,
+                        borderRadius: 3
+                    })}>
+                    <View style={{
+                        backgroundColor: APP_COLOR.ORAGE,
+                        paddingVertical: 12,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: 3
+                    }}>
+                        <Text style={{ color: 'white', fontWeight: '500', fontSize: 16 }}>
+                            Đặt đơn {cart?.[restaurant!._id]?.sum ? `- ${currencyFormatter(restaurant && cart?.[restaurant._id] && cart?.[restaurant!._id].sum)}` : ""}
+                        </Text>
+                    </View>
+                </Pressable>
             </View>
+
         </View>
     )
 }

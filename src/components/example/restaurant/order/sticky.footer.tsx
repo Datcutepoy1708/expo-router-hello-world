@@ -59,7 +59,7 @@ const StickyFooter = (props: IProps) => {
                                     </>
                                 }</Text>
                             </View>
-                            <Pressable onPress={() => alert("cart")}>
+                            <Pressable onPress={() => router.navigate("/product/update.modal")}>
                                 <FontAwesome name="shopping-basket" color={APP_COLOR.ORAGE} size={20} />
                             </Pressable>
                         </View>
