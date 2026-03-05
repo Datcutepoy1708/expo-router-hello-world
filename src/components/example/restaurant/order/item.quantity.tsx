@@ -54,7 +54,8 @@ const ItemQuantity = (props: IProps) => {
                     delete cart[restaurant._id].items[item._id];
                 }
 
-                setCart((prevState: any) => ({ ...prevState, cart }))
+                // merge đúng state cart (không nest dưới key "cart")
+                setCart((prevState: any) => ({ ...prevState, ...cart }))
             }
         }
     }
