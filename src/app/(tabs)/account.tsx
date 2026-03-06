@@ -3,6 +3,7 @@ import { useCurrentApp } from "@/context/app.context";
 import { APP_COLOR } from "@/utils/constant";
 import { getURLBaseBackend } from "@/utils/url.backend";
 import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import { Image, Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -45,7 +46,9 @@ const AccountPage = () => {
                     <Text style={{ fontSize: 20 }}>{appState?.user.name}</Text>
                 </View>
             </View>
-            <Pressable style={{
+            <Pressable 
+            onPress={()=>router.navigate("/(user)/account/info")}
+            style={{
                 paddingVertical: 15,
                 paddingHorizontal: 10,
                 borderBottomColor: "#eee",
