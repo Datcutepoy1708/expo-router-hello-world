@@ -110,7 +110,7 @@ const Login = () => {
                 initialValues={{ email: '', password: '' }}
                 onSubmit={values => handleLogin(values.email, values.password)}
             >
-                {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+                {({ handleChange, handleBlur, handleSubmit, values, errors,touched }) => (
                     // <View style={{ margin: 10 }}>
                     //     <Text>Email</Text>
                     //     <TextInput
@@ -153,6 +153,7 @@ const Login = () => {
                             onBlur={handleBlur('email')}
                             value={values.email}
                             error={errors.email}
+                            touched={touched.email}
                         />
                         <ShareInput
                             label="Mật khẩu"
@@ -163,6 +164,7 @@ const Login = () => {
                             onBlur={handleBlur('password')}
                             value={values.password}
                             error={errors.password}
+                            touched={touched.password}
                         />
                         <View style={{ marginVertical: 10 }}></View>
                         <ShareButton

@@ -22,7 +22,7 @@ const AccountPage = () => {
     const handleLogout =  () => {
         Alert.alert('Đăng xuất', 'Bạn chắc chắn đăng xuất người dùng?', [
             {
-                text: 'Hủy',
+                text: 'Hủy'
             },
             {
                 text: 'Xác nhận', onPress: async () => {

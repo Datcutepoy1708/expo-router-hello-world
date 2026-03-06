@@ -15,3 +15,8 @@ export const SignUpSchema = Yup.object().shape({
     email: Yup.string().email('Định dạng email không hợp lệ').required('Email không được để trống'),
     name: Yup.string().required("Name không được để trống")
 });
+
+export const UpdateSchema = Yup.object().shape({
+    name: Yup.string().required("Name không được để trống"),
+    phone: Yup.string().required("Số điện thoại không được để trống")
+})

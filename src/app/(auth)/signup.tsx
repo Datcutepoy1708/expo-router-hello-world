@@ -88,7 +88,7 @@ const SignUpPage = () => {
                 initialValues={{ name: '', email: '', password: '' }}
                 onSubmit={values => handleSignUp(values.name, values.email, values.password)}
             >
-                {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+                {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
                     <View style={styles.container}>
                         <View>
                             <Text style={{ fontSize: 25, fontWeight: 600, marginVertical: 30 }}>Đăng kí tài khoản</Text>
@@ -101,6 +101,7 @@ const SignUpPage = () => {
                             onBlur={handleBlur('name')}
                             value={values.name}
                             error={errors.name}
+                            touched={touched.name}
                         />
                         <ShareInput
                             label="Email"
@@ -111,6 +112,7 @@ const SignUpPage = () => {
                             onBlur={handleBlur('email')}
                             value={values.email}
                             error={errors.email}
+                            touched={touched.email}
                         />
                         <ShareInput
                             label="Mật khẩu"
@@ -121,6 +123,7 @@ const SignUpPage = () => {
                             onBlur={handleBlur('password')}
                             value={values.password}
                             error={errors.password}
+                            touched={touched.password}
                         />
                         {/* <View style={styles.inputGroup}>
                     <Text style={styles.text}>Họ tên</Text>
