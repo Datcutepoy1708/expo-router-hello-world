@@ -3,8 +3,9 @@ import { useCurrentApp } from "@/context/app.context";
 import { APP_COLOR } from "@/utils/constant";
 import { getURLBaseBackend } from "@/utils/url.backend";
 import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
-import { Image, Platform, Pressable, StyleSheet, Text, View } from "react-native";
+import { Alert, Image, Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const styles = StyleSheet.create({
@@ -17,6 +18,21 @@ const AccountPage = () => {
     const { appState } = useCurrentApp();
     const baseImage = `${getURLBaseBackend()}/images/avatar`;
     const inset = useSafeAreaInsets();
+
+    const handleLogout =  () => {
+        Alert.alert('Đăng xuất', 'Bạn chắc chắn đăng xuất người dùng?', [
+            {
+                text: 'Hủy',
+            },
+            {
+                text: 'Xác nhận', onPress: async () => {
+                    await AsyncStorage.removeItem("access_token");
+                    router.replace("/(auth)/welcome")
+                }
+            }
+        ])
+
+    }
 
 
     // Check if user data exists
@@ -46,17 +62,17 @@ const AccountPage = () => {
                     <Text style={{ fontSize: 20 }}>{appState?.user.name}</Text>
                 </View>
             </View>
-            <Pressable 
-            onPress={()=>router.navigate("/(user)/account/info")}
-            style={{
-                paddingVertical: 15,
-                paddingHorizontal: 10,
-                borderBottomColor: "#eee",
-                borderBottomWidth: 1,
-                justifyContent: 'space-between',
-                flexDirection: "row",
-                alignItems: "center"
-            }}>
+            <Pressable
+                onPress={() => router.navigate("/(user)/account/info")}
+                style={{
+                    paddingVertical: 15,
+                    paddingHorizontal: 10,
+                    borderBottomColor: "#eee",
+                    borderBottomWidth: 1,
+                    justifyContent: 'space-between',
+                    flexDirection: "row",
+                    alignItems: "center"
+                }}>
                 <View style={{
                     flexDirection: "row",
                     gap: 10,
@@ -135,6 +151,7 @@ const AccountPage = () => {
                 justifyContent: "flex-end"
             }}>
                 <Pressable
+                    onPress={handleLogout}
                     style={({ pressed }) => ({
                         opacity: pressed ? 0.5 : 1,
                         padding: 10,
