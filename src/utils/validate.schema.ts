@@ -20,3 +20,19 @@ export const UpdateSchema = Yup.object().shape({
     name: Yup.string().required("Name không được để trống"),
     phone: Yup.string().required("Số điện thoại không được để trống")
 })
+
+export const UpdatePasswordSchema = Yup.object({
+    currentPassword: Yup.string()
+        .min(6, 'Mật khẩu hiện tại cần tối thiểu 6 kí tự')
+        .max(50, 'Mật khẩu tối đa 50 kí tự')
+        .required('Trường này không được để trống'),
+    newPassword: Yup
+        .string()
+        .required('Password không được để trống')
+        .min(6, 'Mật khẩu mới tối thiểu 6 kí tự')
+        .max(50, 'Mật khẩu tối đa 50 kí tự'),
+    confirmNewPassword: Yup
+        .string()
+        .required('Please confirm your password')
+        .oneOf([Yup.ref('newPassword')], 'Passwords must match')  // ← sửa tên ref
+});

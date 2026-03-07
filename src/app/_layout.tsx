@@ -1,6 +1,7 @@
 
 import AppProvider from "@/context/app.context"
 import { APP_COLOR } from "@/utils/constant"
+import { HeaderTitle } from "@react-navigation/elements"
 import { DefaultTheme, ThemeProvider } from "@react-navigation/native"
 import { ErrorBoundaryProps, Stack } from "expo-router"
 import { Button, Text, View } from "react-native"
@@ -84,6 +85,7 @@ const RootLayout = () => {
               <Stack.Screen name="(user)/product/update.modal" options={{ headerShown: false, animation: "fade", presentation: "transparentModal" }} />
               <Stack.Screen name="(user)/product/place.order" options={{ headerTitle: "Xác nhận đơn hàng" }} />
               <Stack.Screen name="(user)/account/info" options={{ headerTitle: "Cập nhật thông tin" }} />
+              <Stack.Screen name="(user)/account/password" options={{ headerTitle: "Thay đổi mật khẩu" }} />
             </Stack>
           </ThemeProvider>
           {/* </SafeAreaView> */}
