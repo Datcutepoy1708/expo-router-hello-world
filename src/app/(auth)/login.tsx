@@ -9,7 +9,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Link, router } from "expo-router";
 import { Formik } from 'formik';
 import { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import Toast from "react-native-root-toast";
 import { SafeAreaView } from "react-native-safe-area-context";
 const styles = StyleSheet.create({
@@ -110,7 +110,7 @@ const Login = () => {
                 initialValues={{ email: '', password: '' }}
                 onSubmit={values => handleLogin(values.email, values.password)}
             >
-                {({ handleChange, handleBlur, handleSubmit, values, errors,touched }) => (
+                {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
                     // <View style={{ margin: 10 }}>
                     //     <Text>Email</Text>
                     //     <TextInput
@@ -166,7 +166,13 @@ const Login = () => {
                             error={errors.password}
                             touched={touched.password}
                         />
-                        <View style={{ marginVertical: 10 }}></View>
+                        <View style={{ marginVertical: 10 }}>
+                            <Text style={{ textAlign: "center", color: APP_COLOR.ORAGE }} onPress={() => router.navigate("/(auth)/request.password")}>
+                                Quên mật khẩu?
+                            </Text>
+                        </View>
+
+
                         <ShareButton
                             loading={loading}
                             title="Đăng nhập"

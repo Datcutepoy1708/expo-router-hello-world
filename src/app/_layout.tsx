@@ -86,6 +86,8 @@ const RootLayout = () => {
               <Stack.Screen name="(user)/product/place.order" options={{ headerTitle: "Xác nhận đơn hàng" }} />
               <Stack.Screen name="(user)/account/info" options={{ headerTitle: "Cập nhật thông tin" }} />
               <Stack.Screen name="(user)/account/password" options={{ headerTitle: "Thay đổi mật khẩu" }} />
+              <Stack.Screen name="(auth)/request.password" options={{ headerTitle: "Quên mật khẩu" }} />
+              <Stack.Screen name="(auth)/forgot.password" options={{ headerTitle: "Thay đổi mật khẩu" }} />
             </Stack>
           </ThemeProvider>
           {/* </SafeAreaView> */}

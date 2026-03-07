@@ -36,3 +36,21 @@ export const UpdatePasswordSchema = Yup.object({
         .required('Please confirm your password')
         .oneOf([Yup.ref('newPassword')], 'Passwords must match')  // ← sửa tên ref
 });
+
+export const RequestPasswordSchema = Yup.object().shape({
+    email: Yup.string()
+        .email('Định dạng email không hợp lệ')
+        .required('Email không dược để trống')
+})
+
+export const ForgotPasswordSchema = Yup.object().shape({
+    password: Yup.string()
+        .min(6, 'Password tối thiểu 6 kí tự')
+        .max(50, 'Password tối đa 50 kí tự')
+        .required('Password không được để trống'),
+    confirmPassword: Yup.string()
+        .required('confirmPassword không được để trống')
+        .oneOf([Yup.ref('password')], 'Passwords must match'),
+    code: Yup.string()
+        .required('Code không được để trống')
+})
