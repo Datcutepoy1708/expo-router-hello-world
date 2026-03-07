@@ -1,10 +1,10 @@
 {
   "expo": {
     "name": "Yummy Food by Datcutepoy",
-    "slug":"Yummy Food by Datcutepoy",
+    "slug": "Yummy Food by Datcutepoy",
     "version": "1.0.0",
     "orientation": "portrait",
-    "scheme":"Yummy Food",
+    "scheme": "Yummy Food",
     "icon": "./src/assets/splash.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -30,6 +30,7 @@
     },
     "plugins": [
       "expo-router",
+      "expo-font",
       [
         "expo-splash-screen",
         {
@@ -41,7 +42,8 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true,

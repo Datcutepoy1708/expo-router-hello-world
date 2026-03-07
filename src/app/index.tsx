@@ -9,8 +9,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Link, router } from "expo-router";
 import { useEffect, useState } from "react";
 import { Image, ImageBackground, StyleSheet, Text, View } from "react-native";
-import { APP_COLOR } from "utils/constant";
+import { APP_COLOR, APP_FONT } from "utils/constant";
 import TextBetweenLine from "./layout/text.between.line";
+import { useFonts } from "expo-font"
 
 import * as SplashScreen from 'expo-splash-screen';
 
@@ -28,9 +29,13 @@ const RootPage = () => {
     // }, [])
     const { setAppState } = useCurrentApp()
     const [state, setState] = useState<any>();
+    const [loaded, error] = useFonts({
+        [APP_FONT]: require('@/assets/font/OpenSans-Regular.ttf')
+    })
     useEffect(() => {
         async function doAsyncStuff() {
             try {
+
                 // do something async here
                 const res = await getAccountAPI();
 
