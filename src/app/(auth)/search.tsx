@@ -4,8 +4,8 @@ import { getURLBaseBackend } from "@/utils/url.backend";
 import { MaterialIcons } from "@expo/vector-icons";
 import debounce from "debounce";
 import { router } from "expo-router";
-import { useState } from "react"
-import { FlatList, Image, Pressable, Text, View } from "react-native"
+import { useState } from "react";
+import { FlatList, Image, Pressable, Text, View } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -38,9 +38,9 @@ const SearchPage = () => {
     const handleSearch = debounce(async (text: string) => {
         setSearchTerms(text);
         if (!text) return;
-        const res = await getRestaurantByName(text);
-        if (res.data) {
-            setRestaurant(res.data.results)
+        const res = await getRestaurantByName(text) as any;
+        if (res.data && res.data.data) {
+            setRestaurant(res.data.data.results)
         }
     }, 300)
     const DefaultResult = () => {
@@ -127,7 +127,7 @@ const SearchPage = () => {
                                         borderBottomWidth: 1,
                                     }}
                                 >
-                                    <Image source={{ uri: `${getURLBaseBackend()}/iamges/restaurants/${item.image}` }} style={{ width: 50, height: 50 }} />
+                                    <Image source={{ uri: `${getURLBaseBackend()}/images/restaurant/${item.image}` }} style={{ width: 50, height: 50 }} />
                                     <Text>{item.name}</Text>
                                 </Pressable>
                             )

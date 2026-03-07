@@ -109,5 +109,5 @@ export const likeRestaunrantAPI = (restaurant: string, quantity: number) => {
 }
 export const getRestaurantByName = (name: string) => {
     const url = `/api/v1/restaurants?current=1&pageSize=10&name=/${name}/i`;
-    return axios.get<IBackendRes<IModelPaginate<IRestaurant>>>(url);
+    return axios.get<any>(url);
 }
