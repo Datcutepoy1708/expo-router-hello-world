@@ -107,3 +107,7 @@ export const likeRestaunrantAPI = (restaurant: string, quantity: number) => {
     const url = `/api/v1/likes`;
     return axios.post<IBackendRes<IUserLogin>>(url, { restaurant, quantity });
 }
+export const getRestaurantByName = (name: string) => {
+    const url = `/api/v1/restaurants?current=1&pageSize=10&name=/${name}/i`;
+    return axios.get<IBackendRes<IModelPaginate<IRestaurant>>>(url);
+}

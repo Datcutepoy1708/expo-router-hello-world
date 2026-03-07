@@ -77,6 +77,16 @@ declare global {
         updatedAt: Date;
     }
 
+    interface IModelPaginate<T> {
+        meta: {
+            current: number,
+            pageSize: number,
+            pages: number,
+            total: number
+        },
+        results: T[]
+    }
+
     interface ICart {
         [key: string]: {
             sum: number,
