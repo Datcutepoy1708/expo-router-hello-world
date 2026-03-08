@@ -4,38 +4,51 @@ import HeaderHome from "@/components/home/header.home";
 import SearchHome from "@/components/home/search.home";
 import TopListHome from "@/components/home/top.list.home";
 import { useCurrentApp } from "@/context/app.context";
-import { useState } from "react";
+import { router } from "expo-router";
+import { useEffect, useState } from "react";
 import { Button, FlatList, ScrollView, StyleSheet, Text, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const data = [
-    { key: 1, name: "Top Quán Rating 5* tuần này",description:"Gợi ý quán được đánh giá 5*", refAPI: "top-rating" },
-    { key: 2, name: "Quán Mới Lên Sàn",description:"Khám phá ngay hàng loạt quán mới cực ngon", refAPI: "newcomer" },
-    { key: 3, name: "Ăn Thỏa Thích, Freeship 0Đ",description:"Bánh ngọt,khô gà,bã mía,Haky Food,... Freeship", refAPI: "top-freeship" },
+    { key: 1, name: "Top Quán Rating 5* tuần này", description: "Gợi ý quán được đánh giá 5*", refAPI: "top-rating" },
+    { key: 2, name: "Quán Mới Lên Sàn", description: "Khám phá ngay hàng loạt quán mới cực ngon", refAPI: "newcomer" },
+    { key: 3, name: "Ăn Thỏa Thích, Freeship 0Đ", description: "Bánh ngọt,khô gà,bã mía,Haky Food,... Freeship", refAPI: "top-freeship" },
 ]
 
 
 
 
 const HomeTab = () => {
-
+    const [mounted, setMounted] = useState(false)
     const MyComponent = () => {
         // https://stackoverflow.com/questions/45939823/react-native-horizontal-flatlist-with-multiple-rows
     }
-    
+
+    useEffect(() => {
+        setMounted(true)
+    })
+
+    useEffect(() => {
+        if (!mounted) return;
+        setTimeout(() => {
+            router.push("/(auth)/popup.sale")
+        }, 1000)
+    }, [mounted])
+
     return (
-        
-            <SafeAreaView style={styles.container}>
-                <CustomFlatList
-                    data={data}
-                    style={styles.list}
-                    renderItem={({ item }) => (<CollectionHome name={item.name} description={item.description} refAPI={item.refAPI} />)}
-                    HeaderComponent={<HeaderHome />}
-                    StickyElementComponent={<SearchHome />}
-                    // TopListElementComponent={<View style={styles.topList} />}
-                    TopListElementComponent={<TopListHome />}
-                />
-            </SafeAreaView>
+
+        <SafeAreaView style={styles.container}>
+            {/* <Button onPress={() => router.navigate("/(auth)/popup.sale")} title="Show modal" /> */}
+            <CustomFlatList
+                data={data}
+                style={styles.list}
+                renderItem={({ item }) => (<CollectionHome name={item.name} description={item.description} refAPI={item.refAPI} />)}
+                HeaderComponent={<HeaderHome />}
+                StickyElementComponent={<SearchHome />}
+                // TopListElementComponent={<View style={styles.topList} />}
+                TopListElementComponent={<TopListHome />}
+            />
+        </SafeAreaView>
     );
 }
 
