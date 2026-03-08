@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { getTopRestaurant } from "@/utils/api";
 import { router } from "expo-router";
 import ContentLoader, { Rect } from "react-content-loader/native";
+import { MaterialIcons } from "@expo/vector-icons";
 interface IProps {
     name: string,
     description: string;
@@ -52,7 +53,21 @@ const CollectionHome = (props: IProps) => {
             {loading === false ? <View style={styles.container}>
                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                     <Text style={{ color: APP_COLOR.ORAGE, fontSize: 15, fontWeight: "600" }}>{name}</Text>
-                    <Text style={{ opacity: 0.5 }}>Xem tất cả</Text>
+                    <Pressable
+                        style={{
+                            flexDirection: "row",
+                            alignItems: "center"
+                        }}
+                        onPress={() => router.navigate("/(auth)/restaurants")}
+                    >
+                        <Text style={{ opacity: 0.5 }}>Xem tất cả</Text>
+                        <MaterialIcons
+                            style={{ marginTop: 3 }}
+                            name="navigate-next"
+                            size={20}
+                            color="grey"
+                        />
+                    </Pressable>
                 </View>
                 <View>
                     <Text style={{ opacity: 0.5, marginVertical: 5 }}>{description}</Text>
